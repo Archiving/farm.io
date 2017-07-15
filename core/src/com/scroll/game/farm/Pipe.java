@@ -1,11 +1,13 @@
 package com.scroll.game.farm;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.scroll.game.handler.Asset;
+
 /*
  * Automation class for farm tiles
  */
 
 public class Pipe {
-
 
 	private Patch[][] farm;
 	
@@ -28,11 +30,17 @@ public class Pipe {
 	};
 	
 	public enum Form {
-		TILLING,
-		WATERING,
-		HARVESTING
+		TILL(new TextureRegion(Asset.instance().getTexture("till_pipe")), 50),
+		WATER(new TextureRegion(Asset.instance().getTexture("water_pipe")), 50),
+		HARVEST(new TextureRegion(Asset.instance().getTexture("harvest_pipe")), 50);
 		
+		public TextureRegion pipeImage;
+		public int cost;
 		
+		private Form(TextureRegion pipeImage, int cost) {
+			this.pipeImage = pipeImage;
+			this.cost = cost;
+		}
 	}
 	
 }
