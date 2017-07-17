@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.scroll.game.Var;
 import com.scroll.game.farm.Crop;
 import com.scroll.game.farm.Patch;
+import com.scroll.game.farm.Pipe;
 import com.scroll.game.farm.Seed;
 import com.scroll.game.farm.Seed.Region;
 import com.scroll.game.handler.Asset;
@@ -21,8 +22,10 @@ public class Player extends MapObject {
 	private Patch[][] farm;
 	private List<Crop> crops;
 	private List<Seed.Type> seeds;
+	private List<Pipe.Form> pipes;
 	
 	private Seed.Type nextSeedType;
+	private Pipe.Form nextPipe;
 	private Patch selectedPatch;
 	private int row;
 	private int col;
@@ -51,7 +54,8 @@ public class Player extends MapObject {
 		TILLING(0.5f),
 		WATERING(0.5f),
 		SEEDING(0.5f),
-		HARVESTING(0.2f);
+		HARVESTING(0.2f),
+		PIPING(0.2f);
 		public float timeRequired;
 		Action(float timeRequired) {
 			this.timeRequired = timeRequired;
@@ -78,8 +82,9 @@ public class Player extends MapObject {
 		cwidth = 12;
 		cheight = 12;
 		moveSpeed = 100;
-		crops = new ArrayList<Crop>();
-		seeds = new ArrayList<Seed.Type>();
+		crops = new ArrayList<>();
+		seeds = new ArrayList<>();
+		pipes = new ArrayList<>();
 		for(int i = 0; i < Var.NUM_SEEDS_START; i++) {
 			Random number = new Random();
 			seeds.add(region.affectedCrops[number.nextInt(region.affectedCrops.length)]);
@@ -119,6 +124,13 @@ public class Player extends MapObject {
 			if(crop != null) {
 				crops.add(crop);
 			}
+			break;
+		case PIPING:
+			farm[actionRow][actionCol].pipe(new Pipe(nextPipe,
+					tileSize * ((int)x / tileSize + 1.0f),
+					tileSize * ((int)y / tileSize + 1.0f),
+					32, 32, farm[actionRow][actionCol]));
+			pipes.remove(0);
 			break;
 		}
 		action = null;
@@ -174,6 +186,19 @@ public class Player extends MapObject {
 			Asset.instance().getSound("till").play(0.5f);
 			actionStarted(Action.HARVESTING, row, col);
 		}
+	}
+	
+	public void pipe() {
+		getCurrentTile();
+		if(row < 0 || row >= farm.length || col < 0 || col >= farm[0].length) {
+			return;
+		}
+		nextPipe = (pipes.isEmpty() || farm[row][col].hasPipe() || farm[row][col].getState() == Patch.State.NORMAL) ? null : pipes.get(0);
+		if(action == null && farm[row][col].canPipe() && nextPipe != null) {
+			Asset.instance().getSound("piping").play(0.5f);
+			actionStarted(Action.PIPING, row, col);
+		}
+		
 	}
 	
 	public boolean sell() {
