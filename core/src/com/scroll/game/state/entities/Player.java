@@ -11,6 +11,7 @@ import com.scroll.game.Var;
 import com.scroll.game.farm.Crop;
 import com.scroll.game.farm.Patch;
 import com.scroll.game.farm.Pipe;
+import com.scroll.game.farm.Pipe.Form;
 import com.scroll.game.farm.Seed;
 import com.scroll.game.farm.Seed.Region;
 import com.scroll.game.handler.Asset;
@@ -89,6 +90,7 @@ public class Player extends MapObject {
 			Random number = new Random();
 			seeds.add(region.affectedCrops[number.nextInt(region.affectedCrops.length)]);
 		}
+		
 	}
 	
 	public void setFarm(Patch[][] farm) {
@@ -126,10 +128,11 @@ public class Player extends MapObject {
 			}
 			break;
 		case PIPING:
-			farm[actionRow][actionCol].pipe(new Pipe(nextPipe,
-					tileSize * ((int)x / tileSize + 1.0f),
-					tileSize * ((int)y / tileSize + 1.0f),
-					32, 32, farm[actionRow][actionCol]));
+			Pipe pipe = new Pipe(nextPipe, this, actionRow, actionCol,
+					tileSize * ((int)x / tileSize),
+					tileSize * ((int)y / tileSize),
+					32, 32);
+			farm[actionRow][actionCol].pipe(pipe);
 			pipes.remove(0);
 			break;
 		}
@@ -142,6 +145,8 @@ public class Player extends MapObject {
 		row -= 14;
 		col -= 12;
 	}
+	
+	public Patch[][] getFarm() { return farm; }
 	
 	public void till() {
 		getCurrentTile();
@@ -193,9 +198,10 @@ public class Player extends MapObject {
 		if(row < 0 || row >= farm.length || col < 0 || col >= farm[0].length) {
 			return;
 		}
-		nextPipe = (pipes.isEmpty() || farm[row][col].hasPipe() || farm[row][col].getState() == Patch.State.NORMAL) ? null : pipes.get(0);
+		
+		System.out.println(farm[row][col].getState() == Patch.State.NORMAL);
+		nextPipe = (pipes.isEmpty() || farm[row][col].hasPipe() || farm[row][col].getState() != Patch.State.NORMAL) ? null : pipes.get(0);
 		if(action == null && farm[row][col].canPipe() && nextPipe != null) {
-			Asset.instance().getSound("piping").play(0.5f);
 			actionStarted(Action.PIPING, row, col);
 		}
 		
@@ -331,4 +337,11 @@ public class Player extends MapObject {
 	public int getMoney() { return money; }	
 	
 	public List<Seed.Type> getSeedInventory() { return seeds; }
+
+	public boolean buyPipe(Form purchase) {
+		if(this.money - purchase.cost < 0) return false;
+		this.money -= purchase.cost;
+		pipes.add(purchase);
+		return true;
+	}
 }

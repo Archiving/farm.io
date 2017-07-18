@@ -87,6 +87,9 @@ public class Main extends ApplicationAdapter {
 		asset.loadTexture("regionbg_oce", "images/region/regionbg/regionbg_oce.png");
 		asset.loadTexture("regionbg_cafr", "images/region/regionbg/regionbg_cafr.png");
 		
+		asset.loadTexture("till_pipe", "images/pipes/water_pipe.png");
+		asset.loadTexture("water_pipe", "images/pipes/water_pipe.png");
+		
 		//tiles
 		asset.loadCropTile("carrot");
 		asset.loadSeedTile("carrot");

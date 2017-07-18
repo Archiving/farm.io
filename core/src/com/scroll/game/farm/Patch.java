@@ -113,6 +113,9 @@ public class Patch {
 				crop();
 			}
 		}
+		if(pipe != null) {
+			pipe.update(dt);
+		}
 	}
 	
 	public void renderHighlight(SpriteBatch sb) {
@@ -121,14 +124,14 @@ public class Patch {
 	
 	public void render(SpriteBatch sb) {
 		sb.draw(image, x - w / 2, y - h / 2);
+		if(pipe != null) {
+			pipe.render(sb);
+		}
 		if(seed != null) {
 			seed.render(sb);
 		}
 		if(crop != null) {
 			crop.render(sb);
-		}
-		if(pipe != null) {
-			pipe.render(sb);
 		}
 	}
 	

@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -97,7 +98,7 @@ public class PlayState extends State {
 		long minute = TimeUnit.SECONDS.toMinutes(seconds) - (TimeUnit.SECONDS.toHours(seconds)* 60);
 		long second = TimeUnit.SECONDS.toSeconds(seconds) - (TimeUnit.SECONDS.toMinutes(seconds) *60);
 		builder.setLength(0);
-		builder.append(day).append((day == 1) ? "/183 day, " : "/183 days, ");
+		builder.append(day).append((day == 1) ? "/10 day, " : "/10 days, ");
 		if(hours < 10) {
 			builder.append("0");
 		}
@@ -133,7 +134,11 @@ public class PlayState extends State {
 	public void update(float dt) {
 		globalTime += 2880 * dt;
 		int day = (int) TimeUnit.SECONDS.toDays((int)globalTime);
-		if(day == 183) gsm.push(new RegionState(gsm, player.getMoney()));
+		if(day == 1) {
+			music.stop();
+			font.setColor(Color.WHITE);
+			gsm.push(new RegionState(gsm, player.getMoney()));
+		}
 		
 		if(Gdx.input.isKeyJustPressed(Keys.NUMPAD_1)) {
 			player.till();
@@ -147,6 +152,9 @@ public class PlayState extends State {
 		if(Gdx.input.isKeyJustPressed(Keys.NUMPAD_4)) {
 			player.harvest();
 		}	
+		if(Gdx.input.isKeyJustPressed(Keys.NUMPAD_5)) {
+			player.pipe();
+		}
 		
 		
 		if(player.intersects(truck)) {
