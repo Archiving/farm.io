@@ -52,10 +52,10 @@ public class Player extends MapObject {
 	private Region region;
 	
 	public enum Action {
-		TILLING(0.5f),
-		WATERING(0.5f),
+		TILLING(0.5f/Var.TECH_TILL_LEVEL),
+		WATERING(0.5f/Var.TECH_WATER_LEVEL),
 		SEEDING(0.5f),
-		HARVESTING(0.2f),
+		HARVESTING(0.2f/Var.TECH_HARVEST_LEVEL),
 		PIPING(0.2f);
 		public float timeRequired;
 		Action(float timeRequired) {
