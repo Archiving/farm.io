@@ -10,6 +10,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.scroll.game.Var;
 import com.scroll.game.farm.Crop;
 import com.scroll.game.farm.Patch;
+import com.scroll.game.farm.Pipe;
+import com.scroll.game.farm.Pipe.Form;
 import com.scroll.game.farm.Seed;
 import com.scroll.game.farm.Seed.Region;
 import com.scroll.game.handler.Asset;
@@ -21,8 +23,10 @@ public class Player extends MapObject {
 	private Patch[][] farm;
 	private List<Crop> crops;
 	private List<Seed.Type> seeds;
+	private List<Pipe.Form> pipes;
 	
 	private Seed.Type nextSeedType;
+	private Pipe.Form nextPipe;
 	private Patch selectedPatch;
 	private int row;
 	private int col;
@@ -48,10 +52,11 @@ public class Player extends MapObject {
 	private Region region;
 	
 	public enum Action {
-		TILLING(0.5f),
-		WATERING(0.5f),
+		TILLING(0.5f/Var.TECH_TILL_LEVEL),
+		WATERING(0.5f/Var.TECH_WATER_LEVEL),
 		SEEDING(0.5f),
-		HARVESTING(0.2f);
+		HARVESTING(0.2f/Var.TECH_HARVEST_LEVEL),
+		PIPING(0.2f);
 		public float timeRequired;
 		Action(float timeRequired) {
 			this.timeRequired = timeRequired;
@@ -78,12 +83,14 @@ public class Player extends MapObject {
 		cwidth = 12;
 		cheight = 12;
 		moveSpeed = 100;
-		crops = new ArrayList<Crop>();
-		seeds = new ArrayList<Seed.Type>();
+		crops = new ArrayList<>();
+		seeds = new ArrayList<>();
+		pipes = new ArrayList<>();
 		for(int i = 0; i < Var.NUM_SEEDS_START; i++) {
 			Random number = new Random();
 			seeds.add(region.affectedCrops[number.nextInt(region.affectedCrops.length)]);
 		}
+		
 	}
 	
 	public void setFarm(Patch[][] farm) {
@@ -120,6 +127,14 @@ public class Player extends MapObject {
 				crops.add(crop);
 			}
 			break;
+		case PIPING:
+			Pipe pipe = new Pipe(nextPipe, this, actionRow, actionCol,
+					tileSize * ((int)x / tileSize),
+					tileSize * ((int)y / tileSize),
+					32, 32);
+			farm[actionRow][actionCol].pipe(pipe);
+			pipes.remove(0);
+			break;
 		}
 		action = null;
 	}
@@ -130,6 +145,8 @@ public class Player extends MapObject {
 		row -= 14;
 		col -= 12;
 	}
+	
+	public Patch[][] getFarm() { return farm; }
 	
 	public void till() {
 		getCurrentTile();
@@ -174,6 +191,20 @@ public class Player extends MapObject {
 			Asset.instance().getSound("till").play(0.5f);
 			actionStarted(Action.HARVESTING, row, col);
 		}
+	}
+	
+	public void pipe() {
+		getCurrentTile();
+		if(row < 0 || row >= farm.length || col < 0 || col >= farm[0].length) {
+			return;
+		}
+		
+		System.out.println(farm[row][col].getState() == Patch.State.NORMAL);
+		nextPipe = (pipes.isEmpty() || farm[row][col].hasPipe() || farm[row][col].getState() != Patch.State.NORMAL) ? null : pipes.get(0);
+		if(action == null && farm[row][col].canPipe() && nextPipe != null) {
+			actionStarted(Action.PIPING, row, col);
+		}
+		
 	}
 	
 	public boolean sell() {
@@ -306,4 +337,11 @@ public class Player extends MapObject {
 	public int getMoney() { return money; }	
 	
 	public List<Seed.Type> getSeedInventory() { return seeds; }
+
+	public boolean buyPipe(Form purchase) {
+		if(this.money - purchase.cost < 0) return false;
+		this.money -= purchase.cost;
+		pipes.add(purchase);
+		return true;
+	}
 }

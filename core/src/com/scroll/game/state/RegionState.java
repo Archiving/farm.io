@@ -3,6 +3,7 @@ package com.scroll.game.state;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -107,6 +108,7 @@ public class RegionState extends State {
 	
 	@Override
 	public void update(float dt) {
+		
 			Vector3 pos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
 			cam.unproject(pos);
 			for(LocationButton button : locations) {

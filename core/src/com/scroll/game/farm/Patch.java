@@ -1,9 +1,7 @@
 package com.scroll.game.farm;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.scroll.game.farm.Seed.Region;
 import com.scroll.game.handler.Asset;
 import com.scroll.game.state.tile.TileMap;
 
@@ -27,6 +25,7 @@ public class Patch {
 	
 	private Seed seed;
 	private Crop crop;
+	private Pipe pipe;
 	
 	private TextureRegion image;
 	
@@ -45,6 +44,8 @@ public class Patch {
 	public boolean canTill() { return state == State.NORMAL && crop == null; }
 	public boolean canWater() { return state == State.TILLED && crop == null; }
 	public boolean canCrop() { return seed != null; }
+	public boolean canHarvest() { return crop != null; }
+	public boolean canPipe() { return state == State.NORMAL; }
 	
 	public void till() {
 		if(canTill()) {
@@ -72,6 +73,14 @@ public class Patch {
 		return false;
 	}
 	
+	public boolean pipe(Pipe pipe) {
+		if(canPipe()) {
+			this.pipe = pipe;
+			return true;
+		}
+		return false;
+	}
+	
 	private void crop() {
 		if(canCrop()) {
 			state = State.NORMAL;
@@ -81,7 +90,6 @@ public class Patch {
 		}
 	}
 	
-	public boolean canHarvest() { return crop != null; }
 	
 	public Crop harvest() {
 		Crop ret = null;
@@ -93,6 +101,8 @@ public class Patch {
 		return ret;
 	}
 	
+	public boolean hasPipe() { return pipe != null; }
+	
 	public boolean hasSeed() { return seed != null; }
 	public State getState() { return state; }
 	
@@ -103,6 +113,9 @@ public class Patch {
 				crop();
 			}
 		}
+		if(pipe != null) {
+			pipe.update(dt);
+		}
 	}
 	
 	public void renderHighlight(SpriteBatch sb) {
@@ -111,6 +124,9 @@ public class Patch {
 	
 	public void render(SpriteBatch sb) {
 		sb.draw(image, x - w / 2, y - h / 2);
+		if(pipe != null) {
+			pipe.render(sb);
+		}
 		if(seed != null) {
 			seed.render(sb);
 		}
