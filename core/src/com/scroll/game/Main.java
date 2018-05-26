@@ -182,7 +182,7 @@ public class Main extends ApplicationAdapter {
 		
 		sb = new SpriteBatch();
 		gsm = new GSM();
-		gsm.push(new RegionState(gsm, 100));
+		gsm.push(new RegionState(gsm, 1000, null));
 	}
 
 	@Override

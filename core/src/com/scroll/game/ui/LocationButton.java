@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.scroll.game.farm.Seed;
+import com.scroll.game.farm.Seed.Region;
 import com.scroll.game.handler.Asset;
 
 public class LocationButton {
@@ -77,4 +78,7 @@ public class LocationButton {
 	public boolean isUnlocked() { return isUnlocked; }
 	public boolean hasHovered() { return hovered; }
 	public boolean isSelected() { return isSelected; }
+	
+	public void setRegion(Region region) { this.region = region; }
+	public Region getRegion() { return region; }
 }

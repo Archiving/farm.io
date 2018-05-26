@@ -2,6 +2,7 @@ package com.scroll.game.state;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -33,7 +34,7 @@ public class RegionState extends State {
 	public Region currentLocation;
 	public UIButton helpButton;
 	
-	public RegionState(GSM gsm, int currentMoney) {
+	public RegionState(GSM gsm, int currentMoney, Region previousRegion) {
 		super(gsm);
 		this.currentMoney = currentMoney;
 		cam = new OrthographicCamera();
@@ -78,6 +79,15 @@ public class RegionState extends State {
 		locations.add(south_africa);
 		locations.add(oceania);
 		locations.add(central_africa);
+		
+		if(previousRegion != null) {
+			for(LocationButton b : locations) {
+				if(b.getRegion() == previousRegion) {
+					System.out.println("Found a region button with the previous region: " + b.locationName);
+					b.setUnlocked();
+				}
+			}
+		}
 	}
 	
 	@Override
@@ -116,7 +126,7 @@ public class RegionState extends State {
 					button.setSelected(true);
 					if(Gdx.input.isTouched()) {
 						Asset.instance().getSound("click").play(0.5f);
-						gsm.push(new PlayState(gsm, selectedRegion));
+						gsm.push(new PlayState(gsm, selectedRegion, 100));
 					}
 				}
 				else if(button.getBounds().contains(new Point((int)pos.x, (int)pos.y)) && !button.isUnlocked()) {

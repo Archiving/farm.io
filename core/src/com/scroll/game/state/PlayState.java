@@ -37,10 +37,12 @@ public class PlayState extends State {
 	private UIButton shopButton, settingsButton, helpButton;
 	private Music music;
 	public Truck truck;
+	public int playTime;
 	
-	public PlayState(GSM gsm, Region selectedRegion) {
+	public PlayState(GSM gsm, Region selectedRegion, int playTime) {
 		super(gsm);
 		this.region = selectedRegion;
+		this.playTime = playTime;
 		music = Asset.instance().getMusic("music");
 		music.setVolume(Var.MUSIC_VOL);
 		music.setLooping(true);
@@ -134,25 +136,25 @@ public class PlayState extends State {
 	public void update(float dt) {
 		globalTime += 2880 * dt;
 		int day = (int) TimeUnit.SECONDS.toDays((int)globalTime);
-		if(day == 1) {
+		if(day == playTime) {
 			music.stop();
 			font.setColor(Color.WHITE);
-			gsm.push(new RegionState(gsm, player.getMoney()));
+			gsm.push(new RegionState(gsm, player.getMoney(), region));
 		}
 		
-		if(Gdx.input.isKeyJustPressed(Keys.NUMPAD_1)) {
+		if(Gdx.input.isKeyJustPressed(Keys.NUM_1)) {
 			player.till();
 		}
-		if(Gdx.input.isKeyJustPressed(Keys.NUMPAD_2)) {
+		if(Gdx.input.isKeyJustPressed(Keys.NUM_2)) {
 			player.water();
 		}
-		if(Gdx.input.isKeyJustPressed(Keys.NUMPAD_3)) {
+		if(Gdx.input.isKeyJustPressed(Keys.NUM_3)) {
 			player.seed();
 		}
-		if(Gdx.input.isKeyJustPressed(Keys.NUMPAD_4)) {
+		if(Gdx.input.isKeyJustPressed(Keys.NUM_4)) {
 			player.harvest();
 		}	
-		if(Gdx.input.isKeyJustPressed(Keys.NUMPAD_5)) {
+		if(Gdx.input.isKeyJustPressed(Keys.NUM_5)) {
 			player.pipe();
 		}
 		
