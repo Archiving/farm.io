@@ -10,6 +10,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
@@ -33,6 +34,7 @@ public class RegionState extends State {
 	public int currentMoney;
 	public Region currentLocation;
 	public UIButton helpButton;
+	public GlyphLayout layout = new GlyphLayout();
 	
 	public RegionState(GSM gsm, int currentMoney, Region previousRegion) {
 		super(gsm);
@@ -88,7 +90,9 @@ public class RegionState extends State {
 				}
 			}
 		}
+		layout.setText(largeFont, Integer.toString(currentMoney));
 	}
+	
 	
 	@Override
 	public void render(SpriteBatch sb) {
@@ -105,7 +109,7 @@ public class RegionState extends State {
 		
 		sb.setColor(1.0f, 1.0f, 1.0f, 1.0f);
 		largeFont.draw(sb, "farm.io", cam.viewportWidth / 2 -  7 * largeFont.getSpaceWidth() / 2, 100);
-		largeFont.draw(sb, "$" + currentMoney, 1200, 950);
+		largeFont.draw(sb, "$" + currentMoney, 1400 - layout.width, 950);
 		hud.draw(sb);
 		helpButton.draw(sb);
 		sb.end();
