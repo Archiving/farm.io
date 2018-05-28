@@ -34,10 +34,11 @@ public class PlayState extends State {
 	private BitmapFont font;
 	private StringBuilder builder;
 	private Region region;
-	private UIButton shopButton, settingsButton, helpButton;
+	private UIButton shopButton, settingsButton, helpButton, quitButton;
 	private Music music;
 	public Truck truck;
 	public int playTime;
+	private boolean showWarning = false;
 	
 	public PlayState(GSM gsm, Region selectedRegion, int playTime) {
 		super(gsm);
@@ -79,6 +80,7 @@ public class PlayState extends State {
 		shopButton = new UIButton(13, Var.HEIGHT - 51, 24, 16, new TextureRegion(Asset.instance().getTexture("shop_button")), new TextureRegion(Asset.instance().getTexture("shop_button_clicked")));
 		settingsButton = new UIButton(88, Var.HEIGHT - 26, 12, 12, new TextureRegion(Asset.instance().getTexture("settings_button")), new TextureRegion(Asset.instance().getTexture("settings_button_clicked")));
 		helpButton = new UIButton(700, 10, 32, 32, new TextureRegion(Asset.instance().getTexture("help_button")), new TextureRegion(Asset.instance().getTexture("help_button_clicked")));
+		quitButton = new UIButton(650, 425, 32, 32, new TextureRegion(Asset.instance().getTexture("quit_button")), new TextureRegion(Asset.instance().getTexture("quit_button_pressed")));
 	}
 	
 	@Override
@@ -102,7 +104,7 @@ public class PlayState extends State {
 		long minute = TimeUnit.SECONDS.toMinutes(seconds) - (TimeUnit.SECONDS.toHours(seconds)* 60);
 		long second = TimeUnit.SECONDS.toSeconds(seconds) - (TimeUnit.SECONDS.toMinutes(seconds) *60);
 		builder.setLength(0);
-		builder.append(day).append((day == 1) ? "/10 day, " : "/10 days, ");
+		builder.append(day).append((day == 1) ? "/" +  playTime + " day, " : "/" + playTime + " days, ");
 		if(hours < 10) {
 			builder.append("0");
 		}
@@ -127,10 +129,13 @@ public class PlayState extends State {
 		font.draw(sb, builder.toString(), 10, Var.HEIGHT - 64);
 		font.draw(sb, "Seeds Left: " + player.getSeedInventory().size(), 10, 415);
 		font.draw(sb, "Crops Stored: " + player.getNumCrops(), 10, 400);
+		font.draw(sb, "Quit Campiagn", 640, 420);
+		
 		
 		shopButton.draw(sb);
 		settingsButton.draw(sb);
 		helpButton.draw(sb);
+		quitButton.draw(sb);
 		sb.end();
 	}
 
@@ -144,19 +149,19 @@ public class PlayState extends State {
 			gsm.push(new RegionState(gsm, player.getMoney(), region));
 		}
 		
-		if(Gdx.input.isKeyJustPressed(Keys.NUM_1)) {
+		if(Gdx.input.isKeyJustPressed(Keys.Q)) {
 			player.till();
 		}
-		if(Gdx.input.isKeyJustPressed(Keys.NUM_2)) {
+		if(Gdx.input.isKeyJustPressed(Keys.W)) {
 			player.water();
 		}
-		if(Gdx.input.isKeyJustPressed(Keys.NUM_3)) {
+		if(Gdx.input.isKeyJustPressed(Keys.E)) {
 			player.seed();
 		}
-		if(Gdx.input.isKeyJustPressed(Keys.NUM_4)) {
+		if(Gdx.input.isKeyJustPressed(Keys.SPACE)) {
 			player.harvest();
 		}	
-		if(Gdx.input.isKeyJustPressed(Keys.NUM_5)) {
+		if(Gdx.input.isKeyJustPressed(Keys.R)) {
 			player.pipe();
 		}
 		
@@ -172,15 +177,15 @@ public class PlayState extends State {
 			}
 		}
 		
-		player.setUp(Gdx.input.isKeyPressed(Keys.W));
-		player.setDown(Gdx.input.isKeyPressed(Keys.S));
-		player.setLeft(Gdx.input.isKeyPressed(Keys.A));
-		player.setRight(Gdx.input.isKeyPressed(Keys.D));
+		player.setUp(Gdx.input.isKeyPressed(Keys.UP));
+		player.setDown(Gdx.input.isKeyPressed(Keys.DOWN));
+		player.setLeft(Gdx.input.isKeyPressed(Keys.LEFT));
+		player.setRight(Gdx.input.isKeyPressed(Keys.RIGHT));
 		
-		if(Gdx.input.isKeyJustPressed(Keys.W)) player.setDirection(Direction.UP);
-		if(Gdx.input.isKeyJustPressed(Keys.S)) player.setDirection(Direction.DOWN);
-		if(Gdx.input.isKeyJustPressed(Keys.A)) player.setDirection(Direction.LEFT);
-		if(Gdx.input.isKeyJustPressed(Keys.D)) player.setDirection(Direction.RIGHT);
+		if(Gdx.input.isKeyJustPressed(Keys.UP)) player.setDirection(Direction.UP);
+		if(Gdx.input.isKeyJustPressed(Keys.DOWN)) player.setDirection(Direction.DOWN);
+		if(Gdx.input.isKeyJustPressed(Keys.LEFT)) player.setDirection(Direction.LEFT);
+		if(Gdx.input.isKeyJustPressed(Keys.RIGHT)) player.setDirection(Direction.RIGHT);
 		player.update(dt);
 		truck.update(dt);
 		
@@ -213,18 +218,26 @@ public class PlayState extends State {
 						new GuideBlock(new TextureRegion(Asset.instance().getTexture("play_guide_block_2")), "Go to the truck to sell the plants you harvest.", 115, 230, 64, 64),
 						new GuideBlock(new TextureRegion(Asset.instance().getTexture("play_guide_block_3")), "Press SPACE while on the truck to open the shop, and buy more seeds!", 115, 130, 64, 64)
 				};
-				
 				gsm.push(new PlayHelpState(gsm, helpBlocks, this, 50, 100));
-				
 			}
 			else {
 				helpButton.clicked = false;
 			}
 		}
 		
+		if(quitButton.getBounds().contains(new Point((int)pos1.x, (int)pos1.y))) {
+			if(Gdx.input.isTouched()) {
+				quitButton.click();
+				showWarning = true;			}
+			else {
+				quitButton.clicked = false;
+			}
+		}
+		
 		if(!helpButton.clicked) helpButton.image = new TextureRegion(Asset.instance().getTexture("help_button"));
 		if(!shopButton.clicked) shopButton.image = new TextureRegion(Asset.instance().getTexture("shop_button"));
 		if(!settingsButton.clicked) settingsButton.image = new TextureRegion(Asset.instance().getTexture("settings_button"));
+		if(!quitButton.clicked) quitButton.image = new TextureRegion(Asset.instance().getTexture("quit_button"));
 		
 	}
 	

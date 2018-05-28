@@ -53,6 +53,9 @@ public class Main extends ApplicationAdapter {
 		asset.loadTexture("play_guide_block_2", "images/hud/play_guide_block_2.png");
 		asset.loadTexture("play_guide_block_3", "images/hud/play_guide_block_3.png");
 		
+		asset.loadTexture("quit_button", "images/hud/quit.png");
+		asset.loadTexture("quit_button_pressed", "images/hud/quit_pressed.png");
+		
 		asset.loadTexture("flag_na", "images/region/flags/flag_na.png");
 		asset.loadTexture("flag_nafr", "images/region/flags/flag_nafr.png");
 		asset.loadTexture("flag_wafr", "images/region/flags/flag_wafr.png");

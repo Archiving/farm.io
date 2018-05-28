@@ -63,32 +63,32 @@ public class SeedShopState extends State {
 	@Override
 	public void update(float dt) {
 		if (showingPopup) {
-			if (Gdx.input.isKeyJustPressed(Keys.ENTER) || Gdx.input.isKeyPressed(Keys.ESCAPE)) {
+			if (Gdx.input.isKeyJustPressed(Keys.SPACE) || Gdx.input.isKeyPressed(Keys.ESCAPE)) {
 				showingPopup = false;
 				Asset.instance().getSound("close").play();
 			}
 		} 
 		else {
-			if (Gdx.input.isKeyJustPressed(Keys.D)) {
+			if (Gdx.input.isKeyJustPressed(Keys.RIGHT)) {
 				if (currentCol < 6) {
 					Asset.instance().getSound("select").play(0.7f);
 					currentCol++;
 				}
 			}
-			if (Gdx.input.isKeyJustPressed(Keys.A)) {
+			if (Gdx.input.isKeyJustPressed(Keys.LEFT)) {
 
 				if (currentCol > 0) {
 					Asset.instance().getSound("select").play(0.7f);
 					currentCol--;
 				}
 			}
-			if (Gdx.input.isKeyJustPressed(Keys.W)) {
+			if (Gdx.input.isKeyJustPressed(Keys.UP)) {
 				if (currentRow > 0) {
 					Asset.instance().getSound("select").play(0.7f);
 					currentRow--;
 				}
 			}
-			if (Gdx.input.isKeyJustPressed(Keys.S)) {
+			if (Gdx.input.isKeyJustPressed(Keys.DOWN)) {
 				if (currentRow < 1) {
 					Asset.instance().getSound("select").play(0.7f);
 					currentRow++;
@@ -101,7 +101,7 @@ public class SeedShopState extends State {
 				gsm.pop();
 			}
 
-			if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
+			if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
 
 				boolean ok = false;
 				Seed.Type purchase = crops[currentRow][currentCol];
