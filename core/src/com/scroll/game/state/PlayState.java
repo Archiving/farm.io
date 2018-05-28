@@ -55,18 +55,20 @@ public class PlayState extends State {
 		tm.loadMap("data/tilemap.tme");
 		
 		player = new Player(tm, selectedRegion);
-		player.setPosition(tm.getWidth() / 2 - 24 , tm.getHeight() / 2 - 24);
+		player.setPosition(100, 280);
 		truck = new Truck(tm);
 		
 		cam = new BoundCamera();
 		cam.setToOrtho(false, Var.WIDTH, Var.HEIGHT);
 		cam.setBounds(0, 0, tm.getWidth(), tm.getHeight());
+		cam.position.set(0,0,0);
 		cam.position.set(player.getx(), player.gety(), 0);
+		cam.update();
 		
-		farm = new Patch[13][41];
+		farm = new Patch[10][20];
 		for(int row = 0; row < farm.length; row++) {
 			for(int col = 0; col < farm[0].length; col++) {
-				farm[row][col] = new Patch(tm, row + 14, col + 12);
+				farm[row][col] = new Patch(tm, row + 4, col + 12);
 			}
 		}
 		
@@ -123,8 +125,8 @@ public class PlayState extends State {
 		font.draw(sb, "$"+Integer.toString(player.getMoney()), 40, Var.HEIGHT - 40);
 		
 		font.draw(sb, builder.toString(), 10, Var.HEIGHT - 64);
-		font.draw(sb, "Seeds Left: " + player.getSeedInventory().size(), 620, 475);
-		font.draw(sb, "Crops Stored: " + player.getNumCrops(), 620, 460);
+		font.draw(sb, "Seeds Left: " + player.getSeedInventory().size(), 10, 415);
+		font.draw(sb, "Crops Stored: " + player.getNumCrops(), 10, 400);
 		
 		shopButton.draw(sb);
 		settingsButton.draw(sb);
@@ -182,7 +184,7 @@ public class PlayState extends State {
 		player.update(dt);
 		truck.update(dt);
 		
-		truck.setPosition(200, 100);
+		truck.setPosition(60, 280);
 		
 		cam.position.set(player.getx(), player.gety(), 0);
 		cam.update();

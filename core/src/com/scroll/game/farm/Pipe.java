@@ -57,10 +57,8 @@ public class Pipe {
 	
 	public Form getForm() { return form; }
 	
-	//TODO automation goes here
 	public void update(float dt) {
 		internalTime += 2880 * dt;
-		System.out.println("internalTime:" + internalTime);
 		if(internalTime > form.autoTime*1000) {
 			switch(form) {
 			case TILL:

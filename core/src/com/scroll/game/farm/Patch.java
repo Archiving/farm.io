@@ -123,7 +123,7 @@ public class Patch {
 	}
 	
 	public void render(SpriteBatch sb) {
-		sb.draw(image, x - w / 2, y - h / 2);
+		sb.draw(image,x - w / 2, y - h / 2);
 		if(pipe != null) {
 			pipe.render(sb);
 		}

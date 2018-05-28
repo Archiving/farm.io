@@ -142,7 +142,7 @@ public class Player extends MapObject {
 	private void getCurrentTile() {
 		row = (int) (tileMap.getNumRows() - (y / tileSize));
 		col = (int) (x / tileSize);
-		row -= 14;
+		row -= 4;
 		col -= 12;
 	}
 	
@@ -239,7 +239,7 @@ public class Player extends MapObject {
 	private void highlightPatch() {
 		int row = (int) (tileMap.getNumRows() - (y / tileSize));
 		int col = (int) (x / tileSize);
-		row -= 14;
+		row -= 4;
 		col -= 12;
 		if(row < 0 || row >= farm.length || col < 0 || col >= farm[0].length) {
 			selectedPatch = null;
@@ -289,16 +289,16 @@ public class Player extends MapObject {
 		//animation check
 		if(action == null) {
 		if(left) {
-			if(animation.getAnimation() != leftWalkAnimation) setAnimation(leftWalkAnimation, 0.1f, 5);
+			if(animation.getAnimation() != leftWalkAnimation) setAnimation(leftWalkAnimation, 0.1f, 3);
 		}
 		else if(right) {
-			if(animation.getAnimation() != rightWalkAnimation) setAnimation(rightWalkAnimation, 0.1f, 5);
+			if(animation.getAnimation() != rightWalkAnimation) setAnimation(rightWalkAnimation, 0.1f, 3);
 		}
 		else if(up) {
-			if(animation.getAnimation() != upWalkAnimation) setAnimation(upWalkAnimation, 0.1f, 5);
+			if(animation.getAnimation() != upWalkAnimation) setAnimation(upWalkAnimation, 0.1f, 3);
 		}
 		else if(down) {
-			if(animation.getAnimation() != downWalkAnimation) setAnimation(downWalkAnimation, 0.1f, 5);
+			if(animation.getAnimation() != downWalkAnimation) setAnimation(downWalkAnimation, 0.1f, 3);
 		}
 		//if not left, right, up, or down, that means idle.
 		else {
