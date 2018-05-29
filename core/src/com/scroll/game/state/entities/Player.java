@@ -142,8 +142,8 @@ public class Player extends MapObject {
 	private void getCurrentTile() {
 		row = (int) (tileMap.getNumRows() - (y / tileSize));
 		col = (int) (x / tileSize);
-		row -= 4;
-		col -= 12;
+		row -= 3;
+		col -= 11;
 	}
 	
 	public Patch[][] getFarm() { return farm; }
@@ -239,8 +239,8 @@ public class Player extends MapObject {
 	private void highlightPatch() {
 		int row = (int) (tileMap.getNumRows() - (y / tileSize));
 		int col = (int) (x / tileSize);
-		row -= 4;
-		col -= 12;
+		row -= 3;
+		col -= 11;
 		if(row < 0 || row >= farm.length || col < 0 || col >= farm[0].length) {
 			selectedPatch = null;
 			return;

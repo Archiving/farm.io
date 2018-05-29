@@ -170,11 +170,7 @@ public class SeedShopState extends State {
 			sb.draw(pixel, Var.WIDTH / 2 - 100, Var.HEIGHT / 2 - 25, 1, 50);
 			sb.draw(pixel, Var.WIDTH / 2 - 100, Var.HEIGHT / 2 + 25, 200, 1);
 			sb.draw(pixel, Var.WIDTH / 2 + 100, Var.HEIGHT / 2 - 25, 1, 50);
-			if (popupText.equals("Not enough money!")) {
-				smallFont.draw(sb, popupText, 312, 254);
-			} else {
-				smallFont.draw(sb, popupText, 312, 254);
-			}
+			smallFont.draw(sb, popupText, 312, 254);
 		}
 		sb.end();
 	}

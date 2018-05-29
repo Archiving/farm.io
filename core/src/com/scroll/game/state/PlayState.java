@@ -35,10 +35,9 @@ public class PlayState extends State {
 	private StringBuilder builder;
 	private Region region;
 	private UIButton shopButton, settingsButton, helpButton, quitButton;
-	private Music music;
+	public Music music;
 	public Truck truck;
 	public int playTime;
-	private boolean showWarning = false;
 	
 	public PlayState(GSM gsm, Region selectedRegion, int playTime) {
 		super(gsm);
@@ -66,10 +65,11 @@ public class PlayState extends State {
 		cam.position.set(player.getx(), player.gety(), 0);
 		cam.update();
 		
-		farm = new Patch[10][20];
+		//[y][x]
+		farm = new Patch[12][22];
 		for(int row = 0; row < farm.length; row++) {
 			for(int col = 0; col < farm[0].length; col++) {
-				farm[row][col] = new Patch(tm, row + 4, col + 12);
+				farm[row][col] = new Patch(tm, row + 3, col + 11);
 			}
 		}
 		
@@ -80,13 +80,23 @@ public class PlayState extends State {
 		shopButton = new UIButton(13, Var.HEIGHT - 51, 24, 16, new TextureRegion(Asset.instance().getTexture("shop_button")), new TextureRegion(Asset.instance().getTexture("shop_button_clicked")));
 		settingsButton = new UIButton(88, Var.HEIGHT - 26, 12, 12, new TextureRegion(Asset.instance().getTexture("settings_button")), new TextureRegion(Asset.instance().getTexture("settings_button_clicked")));
 		helpButton = new UIButton(700, 10, 32, 32, new TextureRegion(Asset.instance().getTexture("help_button")), new TextureRegion(Asset.instance().getTexture("help_button_clicked")));
-		quitButton = new UIButton(650, 425, 32, 32, new TextureRegion(Asset.instance().getTexture("quit_button")), new TextureRegion(Asset.instance().getTexture("quit_button_pressed")));
+		quitButton = new UIButton(670, 460, 32, 32, new TextureRegion(Asset.instance().getTexture("quit_button")), new TextureRegion(Asset.instance().getTexture("quit_button_pressed")));
+	}
+	
+	public PlayState(GSM gsm, PlayState previousState) {
+		this(gsm, previousState.region, previousState.playTime);
+		this.player = previousState.player;
+		this.farm = previousState.farm;
+		this.globalTime = previousState.globalTime;
+		this.truck = previousState.truck;
+		this.cam = previousState.cam;
 	}
 	
 	@Override
 	public void render(SpriteBatch sb) {
 		sb.setProjectionMatrix(cam.combined);
 		sb.begin();
+		
 		tm.render(sb, cam);
 		for(int row = 0; row < farm.length; row++) {
 			for(int col = 0; col < farm[0].length; col++) {
@@ -129,13 +139,13 @@ public class PlayState extends State {
 		font.draw(sb, builder.toString(), 10, Var.HEIGHT - 64);
 		font.draw(sb, "Seeds Left: " + player.getSeedInventory().size(), 10, 415);
 		font.draw(sb, "Crops Stored: " + player.getNumCrops(), 10, 400);
-		font.draw(sb, "Quit Campiagn", 640, 420);
-		
+		font.draw(sb, "Quit", 673, 458);
 		
 		shopButton.draw(sb);
 		settingsButton.draw(sb);
 		helpButton.draw(sb);
 		quitButton.draw(sb);
+		
 		sb.end();
 	}
 
@@ -214,9 +224,11 @@ public class PlayState extends State {
 			if(Gdx.input.isTouched()) {
 				helpButton.click();
 				GuideBlock[] helpBlocks = new GuideBlock[]{
-						new GuideBlock(new TextureRegion(Asset.instance().getTexture("play_guide_block_1")), "NUMPAD 1 to till, 2 to water, 3 to plant, and 4 to harvest.", 115, 330, 64, 64),
-						new GuideBlock(new TextureRegion(Asset.instance().getTexture("play_guide_block_2")), "Go to the truck to sell the plants you harvest.", 115, 230, 64, 64),
-						new GuideBlock(new TextureRegion(Asset.instance().getTexture("play_guide_block_3")), "Press SPACE while on the truck to open the shop, and buy more seeds!", 115, 130, 64, 64)
+						new GuideBlock(new TextureRegion(Asset.instance().getTexture("play_guide_block_1")), "Press Q to till, W to water, E to seed and SPACE to harvest, and arrow keys to move.", 90, 300, 32, 32),
+						new GuideBlock(new TextureRegion(Asset.instance().getTexture("play_guide_block_2")), "Go to the truck to sell the crops that you harvest for money.", 90, 250, 32, 32),
+						new GuideBlock(new TextureRegion(Asset.instance().getTexture("play_guide_block_3")), "Press SPACE while on the truck to use that money to buy more seeds.", 90, 200, 32, 32),
+						new GuideBlock(new TextureRegion(Asset.instance().getTexture("play_guide_block_4")), "Press T to research new technologies with the money you get from selling crops!", 90, 150, 32, 32),
+						new GuideBlock(new TextureRegion(Asset.instance().getTexture("play_guide_block_5")), "Save money near the end of the campaign to travel to new places for better crops.", 90, 100, 32, 32)
 				};
 				gsm.push(new PlayHelpState(gsm, helpBlocks, this, 50, 100));
 			}
@@ -228,7 +240,8 @@ public class PlayState extends State {
 		if(quitButton.getBounds().contains(new Point((int)pos1.x, (int)pos1.y))) {
 			if(Gdx.input.isTouched()) {
 				quitButton.click();
-				showWarning = true;			}
+				gsm.push(new WarningState(gsm, this));
+			}
 			else {
 				quitButton.clicked = false;
 			}
@@ -240,5 +253,9 @@ public class PlayState extends State {
 		if(!quitButton.clicked) quitButton.image = new TextureRegion(Asset.instance().getTexture("quit_button"));
 		
 	}
+	
+	public Player getPlayer() { return player; }
+	public Region getRegion() { return region; }
+	
 	
 }

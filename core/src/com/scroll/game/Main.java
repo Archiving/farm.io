@@ -52,6 +52,8 @@ public class Main extends ApplicationAdapter {
 		asset.loadTexture("play_guide_block_1", "images/hud/play_guide_block_1.png");
 		asset.loadTexture("play_guide_block_2", "images/hud/play_guide_block_2.png");
 		asset.loadTexture("play_guide_block_3", "images/hud/play_guide_block_3.png");
+		asset.loadTexture("play_guide_block_4", "images/hud/play_guide_block_4.png");
+		asset.loadTexture("play_guide_block_5", "images/hud/play_guide_block_5.png");
 		
 		asset.loadTexture("quit_button", "images/hud/quit.png");
 		asset.loadTexture("quit_button_pressed", "images/hud/quit_pressed.png");
