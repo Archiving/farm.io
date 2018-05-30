@@ -8,10 +8,9 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlEnumValue;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 @SuppressWarnings("unused") 
-@XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Tech {	
 	
@@ -27,11 +26,11 @@ public class Tech {
 		@XmlEnumValue("SEEDING")
 		SEEDING(3),
 		
-		@XmlEnumValue("HARVESTING")
-		HARVESTING(4);
+		@XmlEnumValue("HARVEST")
+		HARVEST(4);
 	
 		public int index;
-	
+		
 		private TechType(int index) {
 			this.index = index;
 		}
@@ -40,21 +39,20 @@ public class Tech {
 			return index;
 		}
 	}
+
+	@XmlAttribute(name="type")
+	private TechType type;
 	
 	@XmlElement(name="required")
 	private ArrayList<Tech> required;
-	
-	@XmlAttribute(name="type")
-	private TechType type;
 	
 	private String name;
 	private String image;
 	private int time;
 	private int cost;
 	private int modifier;
-	
-	private int row = type.index;
-	private int col = Integer.parseInt(image.replace("(^[0-9])+", ""));
+
+	private int row, col;
 	
 	public TechType getType() { return type; }
 	public String getImage() { return image; }
@@ -62,6 +60,13 @@ public class Tech {
 	public int getCost() { return cost; }
 	public int getModifier() { return modifier; }
 	
+	public void setRow(int row) { this.row = row; }
+	public void setCol(int col) { this.col = col; }
+	
 	public int getRow() { return row; }
 	public int getCol() { return col; }
+	public void setType(TechType type) {
+		this.type = type;
+	}
+	
 }

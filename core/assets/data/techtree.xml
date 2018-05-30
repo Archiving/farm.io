@@ -1,3 +1,6 @@
+<?xml version="1.0"?>
+
+<root>	
 <tech type="TILLING">
 	<name>Tilling I</name>
 	<image>tilling_1.png</image>
@@ -42,7 +45,9 @@
 	<cost>250</cost>
 	<time>250</time>
 	<modifier>10</modifier>
-</tech><tech type="WATERING">
+</tech>
+
+<tech type="WATERING">
 	<name>Watering I</name>
 	<image>watering_1.png</image>
 	<cost>100</cost>
@@ -87,6 +92,7 @@
 	<time>250</time>
 	<modifier>10</modifier>
 </tech>
+
 <tech type="SEEDING">
 	<name>Seeding I</name>
 	<image>seeding_1.png</image>
@@ -183,5 +189,6 @@
 	<time>250</time>
 	<modifier>10</modifier>
 </tech>
+</root>
 
 

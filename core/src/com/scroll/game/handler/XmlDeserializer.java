@@ -6,6 +6,8 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
+import com.scroll.game.tech.Root;
+
 public class XmlDeserializer {
 
 	public static Object deserialize(String key, Class<?> c) throws JAXBException {
@@ -13,7 +15,9 @@ public class XmlDeserializer {
 		
 		Unmarshaller unmarshaller = jc.createUnmarshaller();
 		File xml = Asset.instance().getXML(key);
-		return unmarshaller.unmarshal(xml);
+		Object o = unmarshaller.unmarshal(xml);
+		
+		return o;
 	}
 	
 }

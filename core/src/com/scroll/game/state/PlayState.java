@@ -173,8 +173,11 @@ public class PlayState extends State {
 		}	
 		if(Gdx.input.isKeyJustPressed(Keys.R)) {
 			player.pipe();
-		}
+		}	
 		
+		if(Gdx.input.isKeyJustPressed(Keys.T)) {
+			gsm.push(new TechnologyState(gsm, this, 100, 75));
+		}
 		
 		if(player.intersects(truck)) {
 			if(Gdx.input.isKeyJustPressed(Keys.SPACE)) {
