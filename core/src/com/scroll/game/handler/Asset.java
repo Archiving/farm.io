@@ -1,5 +1,6 @@
 package com.scroll.game.handler;
 
+import java.io.File;
 import java.util.HashMap;
 
 import com.badlogic.gdx.Gdx;
@@ -20,12 +21,14 @@ public class Asset {
 	public HashMap<String, Sound> sounds;
 	public HashMap<String, BitmapFont> fonts;
 	public HashMap<String, Music> music;
+	public HashMap<String, File> xml;
 	
 	public Asset() {
 		textures = new HashMap<>();
 		sounds = new HashMap<>();
 		fonts = new HashMap<>();
 		music = new HashMap<>();
+		xml = new HashMap<>();
 	}
 	
 	public void loadTexture(String key, String path) {
@@ -87,6 +90,14 @@ public class Asset {
 	
 	public Music getMusic(String key) {
 		return music.get(key);
+	}
+	
+	public void loadXML(String key, String path) {
+		xml.put(key, new File(path));
+	}
+	
+	public File getXML(String key) {
+		return xml.get(key);
 	}
 	
 	public static Asset instance() {

@@ -1,36 +1,67 @@
 package com.scroll.game.tech;
 
-import java.util.Stack;
+import java.util.ArrayList;
 
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlEnum;
+import javax.xml.bind.annotation.XmlEnumValue;
+import javax.xml.bind.annotation.XmlRootElement;
 
-public class Tech {
-
-	public int x,y;
-	public Stack<Tech> requiredTech;
-	public int researchTime;
-	public int cost;
-	public TextureRegion image;
-	public boolean researched;
-	public String techName;
+@SuppressWarnings("unused") 
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
+public class Tech {	
 	
-	public Tech(String techName, int x, int y, Stack<Tech> requiredTech, TextureRegion image, int researchTime, int cost) {
-		this.techName = techName;
-		this.x = x;
-		this.y = y;
-		this.requiredTech = requiredTech;
-		this.researchTime = researchTime;
-		this.cost = cost;
-		this.image = image;
+	@XmlEnum(String.class)
+	public enum TechType {
+		
+		@XmlEnumValue("TILLING")
+		TILLING(1),
+		
+		@XmlEnumValue("WATERING")
+		WATERING(2),
+		
+		@XmlEnumValue("SEEDING")
+		SEEDING(3),
+		
+		@XmlEnumValue("HARVESTING")
+		HARVESTING(4);
+	
+		public int index;
+	
+		private TechType(int index) {
+			this.index = index;
+		}
+
+		public int getRow() {
+			return index;
+		}
 	}
 	
-	public int getX() { return x; }
-	public int getY() { return y; }
-	public Stack<Tech> getRequiredTech() { return requiredTech; }
-	public int getResearchTime() { return researchTime; }
+	@XmlElement(name="required")
+	private ArrayList<Tech> required;
+	
+	@XmlAttribute(name="type")
+	private TechType type;
+	
+	private String name;
+	private String image;
+	private int time;
+	private int cost;
+	private int modifier;
+	
+	private int row = type.index;
+	private int col = Integer.parseInt(image.replace("(^[0-9])+", ""));
+	
+	public TechType getType() { return type; }
+	public String getImage() { return image; }
+	public int getTime() { return time; }
 	public int getCost() { return cost; }
-	public boolean isResearched() { return researched; }
+	public int getModifier() { return modifier; }
 	
-	public void setResearched() { researched = true; }
-	
+	public int getRow() { return row; }
+	public int getCol() { return col; }
 }

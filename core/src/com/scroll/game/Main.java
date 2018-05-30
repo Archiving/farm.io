@@ -184,6 +184,7 @@ public class Main extends ApplicationAdapter {
 		asset.loadRegion("oce");
 		
 		asset.loadMusic("music", "data/music.wav");
+		asset.loadXML("tech", "data/techtree.xml");
 		
 		sb = new SpriteBatch();
 		gsm = new GSM();

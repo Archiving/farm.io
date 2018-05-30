@@ -1,0 +1,187 @@
+<tech type="TILLING">
+	<name>Tilling I</name>
+	<image>tilling_1.png</image>
+	<cost>100</cost>
+	<time>100</time>
+	<modifier>2</modifier>
+</tech>
+<tech type="TILLING">
+	<require>Tilling II</require>
+	<name>Tilling II</name>
+	<image>tilling_2.png</image>
+	<cost>150</cost>
+	<time>150</time>
+	<modifier>4</modifier>
+</tech>
+<tech type="TILLING">
+	<require>Tilling I</require>
+	<require>Tilling II</require>
+	<name>Tilling III</name>
+	<image>tilling_3.png</image>
+	<cost>200</cost>
+	<time>200</time>
+	<modifier>6</modifier>
+</tech>
+<tech type="TILLING">
+	<require>Tilling I</require>
+	<require>Tilling II</require>
+	<require>Tilling III</require>
+	<name>Tilling IV</name>
+	<image>tilling_4.png</image>
+	<cost>250</cost>
+	<time>250</time>
+	<modifier>8</modifier>
+</tech>
+<tech type="TILLING">
+	<require>Tilling I</require>
+	<require>Tilling II</require>
+	<require>Tilling III</require>
+	<require>Tilling IV</require>
+	<name>Tilling V</name>
+	<image>tilling_5.png</image>
+	<cost>250</cost>
+	<time>250</time>
+	<modifier>10</modifier>
+</tech><tech type="WATERING">
+	<name>Watering I</name>
+	<image>watering_1.png</image>
+	<cost>100</cost>
+	<time>100</time>
+	<modifier>2</modifier>
+</tech>
+<tech type="WATERING">
+	<require>Watering II</require>
+	<name>Watering II</name>
+	<image>watering_2.png</image>
+	<cost>150</cost>
+	<time>150</time>
+	<modifier>4</modifier>
+</tech>
+<tech type="WATERING">
+	<require>Watering I</require>
+	<require>Watering II</require>
+	<name>Watering III</name>
+	<image>watering_3.png</image>
+	<cost>200</cost>
+	<time>200</time>
+	<modifier>6</modifier>
+</tech>
+<tech type="WATERING">
+	<require>Watering I</require>
+	<require>Watering II</require>
+	<require>Watering III</require>
+	<name>Watering IV</name>
+	<image>watering_4.png</image>
+	<cost>250</cost>
+	<time>250</time>
+	<modifier>8</modifier>
+</tech>
+<tech type="WATERING">
+	<require>Watering I</require>
+	<require>Watering II</require>
+	<require>Watering III</require>
+	<require>Watering IV</require>
+	<name>Watering V</name>
+	<image>watering_5.png</image>
+	<cost>250</cost>
+	<time>250</time>
+	<modifier>10</modifier>
+</tech>
+<tech type="SEEDING">
+	<name>Seeding I</name>
+	<image>seeding_1.png</image>
+	<cost>100</cost>
+	<time>100</time>
+	<modifier>2</modifier>
+</tech>
+<tech type="SEEDING">
+	<require>Seeding II</require>
+	<name>Seeding II</name>
+	<image>seeding_2.png</image>
+	<cost>150</cost>
+	<time>150</time>
+	<modifier>4</modifier>
+</tech>
+<tech type="SEEDING">
+	<require>Seeding I</require>
+	<require>Seeding II</require>
+	<name>Seeding III</name>
+	<image>seeding_3.png</image>
+	<cost>200</cost>
+	<time>200</time>
+	<modifier>6</modifier>
+</tech>
+<tech type="SEEDING">
+	<require>Seeding I</require>
+	<require>Seeding II</require>
+	<require>Seeding III</require>
+	<name>Seeding IV</name>
+	<image>seeding_4.png</image>
+	<cost>250</cost>
+	<time>250</time>
+	<modifier>8</modifier>
+</tech>
+<tech type="SEEDING">
+	<require>Seeding I</require>
+	<require>Seeding II</require>
+	<require>Seeding III</require>
+	<require>Seeding IV</require>
+	<name>Seeding V</name>
+	<image>seeding_5.png</image>
+	<cost>250</cost>
+	<time>250</time>
+	<modifier>10</modifier>
+</tech>
+
+<tech type="HARVEST">
+	<name>Harvest I</name>
+	<image>harvest_1.png</image>
+	<require>Seeding III</require>
+	<cost>100</cost>
+	<time>100</time>
+	<modifier>2</modifier>
+</tech>
+<tech type="HARVEST">
+	<require>Seeding III</require>
+	<require>Harvest II</require>
+	<name>Harvest II</name>
+	<image>harvest_2.png</image>
+	<cost>150</cost>
+	<time>150</time>
+	<modifier>4</modifier>
+</tech>
+<tech type="HARVEST">
+	<require>Seeding III</require>
+	<require>Harvest I</require>
+	<require>Harvest II</require>
+	<name>Harvest III</name>
+	<image>harvest_3.png</image>
+	<cost>200</cost>
+	<time>200</time>
+	<modifier>6</modifier>
+</tech>
+<tech type="HARVEST">
+	<require>Seeding III</require>
+	<require>Harvest I</require>
+	<require>Harvest II</require>
+	<require>Harvest III</require>
+	<name>Harvest IV</name>
+	<image>harvest_4.png</image>
+	<cost>250</cost>
+	<time>250</time>
+	<modifier>8</modifier>
+</tech>
+<tech type="HARVEST">
+	<require>Seeding III</require>
+	<require>Harvest I</require>
+	<require>Harvest II</require>
+	<require>Harvest III</require>
+	<require>Harvest IV</require>
+	<name>Harvest V</name>
+	<image>harvest_5.png</image>
+	<cost>250</cost>
+	<time>250</time>
+	<modifier>10</modifier>
+</tech>
+
+
