@@ -153,6 +153,7 @@ public class Main extends ApplicationAdapter {
 		asset.loadSeedTile("tomato");
 		asset.loadCropItem("tomato");
 		
+		asset.loadFont("xs_font", 9);
 		asset.loadFont("small_font", 10);
 		asset.loadFont("large_font", 96);
 		asset.loadFont("med_font", 40);
@@ -182,6 +183,30 @@ public class Main extends ApplicationAdapter {
 		asset.loadRegion("easia");
 		asset.loadRegion("seasia");
 		asset.loadRegion("oce");
+		
+		asset.loadTexture("watering_1", "images/technology/watering_1.png");
+		asset.loadTexture("watering_2", "images/technology/watering_2.png");
+		asset.loadTexture("watering_3", "images/technology/watering_3.png");
+		asset.loadTexture("watering_4", "images/technology/watering_4.png");
+		asset.loadTexture("watering_5", "images/technology/watering_5.png");
+		
+		asset.loadTexture("harvest_1", "images/technology/harvesting_1.png");
+		asset.loadTexture("harvest_2", "images/technology/harvesting_2.png");
+		asset.loadTexture("harvest_3", "images/technology/harvesting_3.png");
+		asset.loadTexture("harvest_4", "images/technology/harvesting_4.png");
+		asset.loadTexture("harvest_5", "images/technology/harvesting_5.png");
+		
+		asset.loadTexture("seeding_1", "images/technology/seeding_1.png");
+		asset.loadTexture("seeding_2", "images/technology/seeding_2.png");
+		asset.loadTexture("seeding_3", "images/technology/seeding_3.png");
+		asset.loadTexture("seeding_4", "images/technology/seeding_4.png");
+		asset.loadTexture("seeding_5", "images/technology/seeding_5.png");	
+		
+		asset.loadTexture("tilling_1", "images/technology/tilling_1.png");
+		asset.loadTexture("tilling_2", "images/technology/tilling_2.png");
+		asset.loadTexture("tilling_3", "images/technology/tilling_3.png");
+		asset.loadTexture("tilling_4", "images/technology/tilling_4.png");
+		asset.loadTexture("tilling_5", "images/technology/tilling_5.png");
 		
 		asset.loadMusic("music", "data/music.wav");
 		asset.loadXML("tech", "data/techtree.xml");

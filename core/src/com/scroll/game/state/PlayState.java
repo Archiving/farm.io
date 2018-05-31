@@ -21,6 +21,7 @@ import com.scroll.game.state.entities.Player;
 import com.scroll.game.state.entities.Truck;
 import com.scroll.game.state.tile.MapObject.Direction;
 import com.scroll.game.state.tile.TileMap;
+import com.scroll.game.tech.Tech;
 import com.scroll.game.ui.GuideBlock;
 import com.scroll.game.ui.UIButton;
 
@@ -38,6 +39,8 @@ public class PlayState extends State {
 	public Music music;
 	public Truck truck;
 	public int playTime;
+	//current tech being researched
+	public Tech currentTech;
 	
 	public PlayState(GSM gsm, Region selectedRegion, int playTime) {
 		super(gsm);
@@ -90,6 +93,11 @@ public class PlayState extends State {
 		this.globalTime = previousState.globalTime;
 		this.truck = previousState.truck;
 		this.cam = previousState.cam;
+	}
+	
+	public PlayState(GSM gsm, PlayState previousState, Tech currentTech) {
+		this(gsm, previousState);
+		this.currentTech = currentTech;
 	}
 	
 	@Override

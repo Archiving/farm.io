@@ -17,6 +17,7 @@ import com.scroll.game.farm.Seed.Region;
 import com.scroll.game.handler.Asset;
 import com.scroll.game.state.tile.MapObject;
 import com.scroll.game.state.tile.TileMap;
+import com.scroll.game.tech.Tech;
 
 public class Player extends MapObject {
 
@@ -50,6 +51,8 @@ public class Player extends MapObject {
 	private Seed.Type selectedSeed;
 	private int money;
 	private Region region;
+	
+	private Tech currentResearch;
 	
 	public enum Action {
 		TILLING(0.5f),
@@ -342,6 +345,13 @@ public class Player extends MapObject {
 		if(this.money - purchase.cost < 0) return false;
 		this.money -= purchase.cost;
 		pipes.add(purchase);
+		return true;
+	}
+	
+	public boolean buyTech(Tech purchase) {
+		if(this.money - purchase.getCost() < 0) return false;
+		if(currentResearch != null) return false;
+		currentResearch = purchase;
 		return true;
 	}
 }

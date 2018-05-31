@@ -18,16 +18,16 @@ public class Tech {
 	public enum TechType {
 		
 		@XmlEnumValue("TILLING")
-		TILLING(1),
+		TILLING(4),
 		
 		@XmlEnumValue("WATERING")
-		WATERING(2),
+		WATERING(3),
 		
 		@XmlEnumValue("SEEDING")
-		SEEDING(3),
+		SEEDING(2),
 		
 		@XmlEnumValue("HARVEST")
-		HARVEST(4);
+		HARVEST(1);
 	
 		public int index;
 		
@@ -47,6 +47,8 @@ public class Tech {
 	private ArrayList<Tech> required;
 	
 	private String name;
+	
+	@XmlElement(name="image")
 	private String image;
 	private int time;
 	private int cost;
@@ -54,7 +56,12 @@ public class Tech {
 
 	private int row, col;
 	
+	private boolean unlocked = false;
+	private boolean selected = false;
+	private boolean progress = false;
+	
 	public TechType getType() { return type; }
+	public String getName() { return name; }
 	public String getImage() { return image; }
 	public int getTime() { return time; }
 	public int getCost() { return cost; }
@@ -68,5 +75,12 @@ public class Tech {
 	public void setType(TechType type) {
 		this.type = type;
 	}
+	
+	public boolean isUnlocked() { return unlocked; }
+	public void setUnlocked(boolean b) { unlocked = b; }
+	public boolean isSelected() { return selected; }
+	public void setSelected(boolean b) { selected = b; }
+	public boolean isInProgress() { return progress; }
+	public void setProgress(boolean b) { progress = b; }
 	
 }
