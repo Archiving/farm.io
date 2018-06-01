@@ -40,7 +40,8 @@ public class PlayState extends State {
 	public Truck truck;
 	public int playTime;
 	//current tech being researched
-	public Tech currentTech;
+	public Tech[][] progressTech;
+	public Tech[][] finishedTech;
 	
 	public PlayState(GSM gsm, Region selectedRegion, int playTime) {
 		super(gsm);
@@ -95,9 +96,15 @@ public class PlayState extends State {
 		this.cam = previousState.cam;
 	}
 	
-	public PlayState(GSM gsm, PlayState previousState, Tech currentTech) {
+	public PlayState(GSM gsm, PlayState previousState, Tech[][] currentTech) {
 		this(gsm, previousState);
-		this.currentTech = currentTech;
+		for(int y = 0; y < currentTech.length; y++) {
+			for(int x = 0; x < currentTech[y].length; x++) {
+				if(currentTech[y][x].isInProgress()) this.progressTech[y][x] = currentTech[y][x];
+				if(currentTech[y][x].isUnlocked()) this.finishedTech[y][x] = currentTech[y][x];
+			} 
+		}
+		
 	}
 	
 	@Override

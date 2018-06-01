@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.scroll.game.Var;
 import com.scroll.game.handler.Asset;
 import com.scroll.game.handler.XmlDeserializer;
 import com.scroll.game.state.entities.Player;
@@ -25,7 +27,9 @@ public class TechnologyState extends State {
 	public BitmapFont medFont;
 	public BitmapFont smallFont;
 	public TextureRegion pixel;
-	
+	public String popupText;
+	public boolean showingPopup;
+
 	protected TechnologyState(GSM gsm, State previousState, int x, int y) {
 		super(gsm);
 		this.x = x;
@@ -33,9 +37,9 @@ public class TechnologyState extends State {
 		this.previousState = previousState;
 
 		pixel = new TextureRegion(Asset.instance().getTexture("pixel"));
-		
+
 		techTree = new Tech[5][5];
-		
+
 		try {
 			Root r = (Root) XmlDeserializer.deserialize("tech", Root.class);
 			Tech[] techs = r.getTech();
@@ -65,6 +69,8 @@ public class TechnologyState extends State {
 
 	@Override
 	public void render(SpriteBatch sb) {
+		System.out.println("Showing Popup: " + showingPopup);
+
 		previousState.render(sb);
 		ShapeRenderer renderer = new ShapeRenderer();
 		renderer.begin(ShapeRenderer.ShapeType.Filled);
@@ -86,26 +92,28 @@ public class TechnologyState extends State {
 		for (int y = 0; y < techTree.length; y++) {
 			for (int x = 0; x < techTree[y].length; x++) {
 				if (techTree[y][x] != null) {
-					TextureRegion image = new TextureRegion(Asset.instance().getTexture(techTree[y][x].getImage()), 16, 16);
+					TextureRegion image = new TextureRegion(Asset.instance().getTexture(techTree[y][x].getImage()), 16,
+							16);
 
 					int posX = this.x + 85 * x;
 					int posY = 20 + this.y + 80 * y;
-					if(!techTree[y][x].isUnlocked() && !techTree[y][x].isSelected()) sb.setColor(Color.GRAY);
+					if (!techTree[y][x].isUnlocked() && !techTree[y][x].isSelected())
+						sb.setColor(Color.GRAY);
 					sb.draw(image, posX, posY, 16, 16);
 					sb.setColor(1, 1, 1, 1);
 					String name = techTree[y][x].getName();
-					smallFont.draw(sb, name, posX - (name.length() * smallFont.getSpaceWidth())/2, posY - 5);
-					
-					if((x+1) < techTree[y].length) {
-						int nextX = this.x + 85 * (x+1);
+					smallFont.draw(sb, name, posX - (name.length() * smallFont.getSpaceWidth()) / 2, posY - 5);
+
+					if ((x + 1) < techTree[y].length) {
+						int nextX = this.x + 85 * (x + 1);
 						sb.draw(pixel, posX + 16, posY + 8, nextX - posX, 1);
 					}
 				}
 			}
 		}
-		
+
 		sb.setColor(Color.YELLOW);
-		
+
 		int posx = this.x + 85 * (col);
 		int posy = 20 + this.y + 80 * (row);
 		sb.draw(pixel, posx, posy, 16, 1);
@@ -113,69 +121,99 @@ public class TechnologyState extends State {
 		sb.draw(pixel, posx, posy + 16, 16, 1);
 		sb.draw(pixel, posx, posy, 1, 16);
 		sb.setColor(Color.WHITE);
+		if (showingPopup) {
+			sb.setColor(Color.BLACK);
+			sb.draw(pixel, Var.WIDTH / 2 - 100, Var.HEIGHT / 2 - 25, 200, 50);
+			sb.setColor(Color.WHITE);
+			sb.draw(pixel, Var.WIDTH / 2 - 100, Var.HEIGHT / 2 - 25, 200, 1);
+			sb.draw(pixel, Var.WIDTH / 2 - 100, Var.HEIGHT / 2 - 25, 1, 50);
+			sb.draw(pixel, Var.WIDTH / 2 - 100, Var.HEIGHT / 2 + 25, 200, 1);
+			sb.draw(pixel, Var.WIDTH / 2 + 100, Var.HEIGHT / 2 - 25, 1, 50);
+			smallFont.draw(sb, popupText, 305, 254);
+		}
+
 		sb.end();
 	}
 
 	@Override
 	public void update(float dt) {
-		
-		if(techTree[row][col] == selectedTech) techTree[row][col].setSelected(true);
-		
-		if (Gdx.input.isKeyJustPressed(Keys.DOWN)) {
-			if (row > 0) {
-				techTree[row][col].setSelected(false);
-				row--;
-				techTree[row][col].setSelected(true);
-			} else {
-				row = TechType.values().length;
-			}
-		}
 
-		if (Gdx.input.isKeyJustPressed(Keys.UP)) {
-			if (row < TechType.values().length) {
-				techTree[row][col].setSelected(false);
-				row++;
-				techTree[row][col].setSelected(true);
-			} else {
-				row = 0;
+		if (showingPopup) {
+			if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
+				showingPopup = false;
+				Asset.instance().getSound("close").play();
 			}
-		}
+		} else {
 
-		if (Gdx.input.isKeyJustPressed(Keys.RIGHT)) {
-			if (col < maxCol) {
-				techTree[row][col].setSelected(false);
-				col++;
+			if (techTree[row][col] == selectedTech)
 				techTree[row][col].setSelected(true);
-			} else {
-				col = 1;
-			}
-		}
 
-		if (Gdx.input.isKeyJustPressed(Keys.LEFT)) {
-			if (col > 0) {
-				techTree[row][col].setSelected(false);
-				col--;
-				techTree[row][col].setSelected(true);
-			} else {
-				col = maxCol;
-			}
-		}
-		
-		if(Gdx.input.isKeyJustPressed(Keys.SPACE)) {
-			Player p = ((PlayState)previousState).getPlayer();
-			int money = p.getMoney();
-			boolean ok = (selectedTech.isInProgress()) ? false : p.buyTech(selectedTech);
-			if(ok)
-				//successful purchase
-				Asset.instance().getSound("purchase").play(0.5f);
-				selectedTech.setProgress(true);
-			}
-			else {
-				
+			if (Gdx.input.isKeyJustPressed(Keys.DOWN)) {
+				if (row > 0) {
+					techTree[row][col].setSelected(false);
+					row--;
+					techTree[row][col].setSelected(true);
+				} else {
+					techTree[row][col].setSelected(false);
+					row = TechType.values().length - 1;
+					techTree[row][col].setSelected(true);
+				}
 			}
 
-		if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
-			gsm.push(new PlayState(gsm, (PlayState) previousState));
+			if (Gdx.input.isKeyJustPressed(Keys.UP)) {
+				if (row < TechType.values().length - 1) {
+					techTree[row][col].setSelected(false);
+					row++;
+					techTree[row][col].setSelected(true);
+				} else {
+					techTree[row][col].setSelected(false);
+					row = 0;
+					techTree[row][col].setSelected(true);
+				}
+			}
+
+			if (Gdx.input.isKeyJustPressed(Keys.RIGHT)) {
+				if (col < maxCol - 1) {
+					techTree[row][col].setSelected(false);
+					col++;
+					techTree[row][col].setSelected(true);
+				} else {
+					techTree[row][col].setSelected(false);
+					col = 0;
+					techTree[row][col].setSelected(true);
+				}
+			}
+
+			if (Gdx.input.isKeyJustPressed(Keys.LEFT)) {
+				if (col > 0) {
+					techTree[row][col].setSelected(false);
+					col--;
+					techTree[row][col].setSelected(true);
+				} else {
+					techTree[row][col].setSelected(false);
+					col = maxCol - 1;
+					techTree[row][col].setSelected(true);
+				}
+			}
+
+			if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
+				Player p = ((PlayState) previousState).getPlayer();
+				boolean ok = (selectedTech.isInProgress()) ? false : p.buyTech(selectedTech);
+				if (ok) {
+					// successful purchase
+					Asset.instance().getSound("purchase").play(0.5f);
+					selectedTech.setProgress(true);
+					popupText = "Bought research!";
+					showingPopup = true;
+				} else {
+					popupText = "Unsuccessful purchase.";
+					showingPopup = true;
+				}
+			}
+
+			if (Gdx.input.isKeyJustPressed(Keys.ESCAPE) && !showingPopup) {
+				gsm.push(new PlayState(gsm, (PlayState) previousState, techTree));
+			}
 		}
 	}
 
