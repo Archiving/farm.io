@@ -1,6 +1,7 @@
 package com.scroll.game.state;
 
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 import com.badlogic.gdx.Gdx;
@@ -40,8 +41,8 @@ public class PlayState extends State {
 	public Truck truck;
 	public int playTime;
 	//current tech being researched
-	public Tech[][] progressTech;
-	public Tech[][] finishedTech;
+	public ArrayList<Tech> progressTech;
+	public ArrayList<Tech> finishedTech;
 	
 	public PlayState(GSM gsm, Region selectedRegion, int playTime) {
 		super(gsm);
@@ -81,6 +82,9 @@ public class PlayState extends State {
 		font = Asset.instance().getFont("small_font");
 		builder = new StringBuilder();
 		
+		progressTech = new ArrayList<>();
+		finishedTech = new ArrayList<>();
+		
 		shopButton = new UIButton(13, Var.HEIGHT - 51, 24, 16, new TextureRegion(Asset.instance().getTexture("shop_button")), new TextureRegion(Asset.instance().getTexture("shop_button_clicked")));
 		settingsButton = new UIButton(88, Var.HEIGHT - 26, 12, 12, new TextureRegion(Asset.instance().getTexture("settings_button")), new TextureRegion(Asset.instance().getTexture("settings_button_clicked")));
 		helpButton = new UIButton(700, 10, 32, 32, new TextureRegion(Asset.instance().getTexture("help_button")), new TextureRegion(Asset.instance().getTexture("help_button_clicked")));
@@ -100,9 +104,11 @@ public class PlayState extends State {
 		this(gsm, previousState);
 		for(int y = 0; y < currentTech.length; y++) {
 			for(int x = 0; x < currentTech[y].length; x++) {
-				if(currentTech[y][x].isInProgress()) this.progressTech[y][x] = currentTech[y][x];
-				if(currentTech[y][x].isUnlocked()) this.finishedTech[y][x] = currentTech[y][x];
-			} 
+				if(currentTech[y][x] != null) {
+					if(currentTech[y][x].isInProgress()) this.progressTech.add(currentTech[y][x]);
+					if(currentTech[y][x].isUnlocked()) this.finishedTech.add(currentTech[y][x]);
+				}
+			}
 		}
 		
 	}

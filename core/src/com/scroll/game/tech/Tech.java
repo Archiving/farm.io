@@ -18,16 +18,16 @@ public class Tech {
 	public enum TechType {
 		
 		@XmlEnumValue("TILLING")
-		TILLING(4),
+		TILLING(1),
 		
 		@XmlEnumValue("WATERING")
-		WATERING(3),
+		WATERING(2),
 		
 		@XmlEnumValue("SEEDING")
-		SEEDING(2),
+		SEEDING(3),
 		
 		@XmlEnumValue("HARVEST")
-		HARVEST(1);
+		HARVEST(4);
 	
 		public int index;
 		

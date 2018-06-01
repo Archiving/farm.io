@@ -96,7 +96,7 @@ public class TechnologyState extends State {
 							16);
 
 					int posX = this.x + 85 * x;
-					int posY = 20 + this.y + 80 * y;
+					int posY = 260 + this.y - 80 * y;
 					if (!techTree[y][x].isUnlocked() && !techTree[y][x].isSelected())
 						sb.setColor(Color.GRAY);
 					sb.draw(image, posX, posY, 16, 16);
@@ -115,7 +115,7 @@ public class TechnologyState extends State {
 		sb.setColor(Color.YELLOW);
 
 		int posx = this.x + 85 * (col);
-		int posy = 20 + this.y + 80 * (row);
+		int posy = 260 + this.y - 80 * (row);
 		sb.draw(pixel, posx, posy, 16, 1);
 		sb.draw(pixel, posx + 16, posy, 1, 17);
 		sb.draw(pixel, posx, posy + 16, 16, 1);
@@ -148,7 +148,8 @@ public class TechnologyState extends State {
 			if (techTree[row][col] == selectedTech)
 				techTree[row][col].setSelected(true);
 
-			if (Gdx.input.isKeyJustPressed(Keys.DOWN)) {
+			if (Gdx.input.isKeyJustPressed(Keys.UP)) {
+				Asset.instance().getSound("select").play(0.7f);
 				if (row > 0) {
 					techTree[row][col].setSelected(false);
 					row--;
@@ -160,7 +161,8 @@ public class TechnologyState extends State {
 				}
 			}
 
-			if (Gdx.input.isKeyJustPressed(Keys.UP)) {
+			if (Gdx.input.isKeyJustPressed(Keys.DOWN)) {
+				Asset.instance().getSound("select").play(0.7f);
 				if (row < TechType.values().length - 1) {
 					techTree[row][col].setSelected(false);
 					row++;
@@ -173,6 +175,7 @@ public class TechnologyState extends State {
 			}
 
 			if (Gdx.input.isKeyJustPressed(Keys.RIGHT)) {
+				Asset.instance().getSound("select").play(0.7f);
 				if (col < maxCol - 1) {
 					techTree[row][col].setSelected(false);
 					col++;
@@ -185,6 +188,7 @@ public class TechnologyState extends State {
 			}
 
 			if (Gdx.input.isKeyJustPressed(Keys.LEFT)) {
+				Asset.instance().getSound("select").play(0.7f);
 				if (col > 0) {
 					techTree[row][col].setSelected(false);
 					col--;
