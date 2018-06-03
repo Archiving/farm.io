@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlEnumValue;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlSeeAlso;
 
 @SuppressWarnings("unused") 
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -44,14 +44,21 @@ public class Tech {
 	private TechType type;
 	
 	@XmlElement(name="required")
-	private ArrayList<Tech> required;
+	private Tech[] required;
 	
+	@XmlElement(name="name")
 	private String name;
 	
 	@XmlElement(name="image")
 	private String image;
+	
+	@XmlElement(name="time")
 	private int time;
+	
+	@XmlElement(name="cost")
 	private int cost;
+	
+	@XmlElement(name="modifier")
 	private int modifier;
 
 	private int row, col;
@@ -61,6 +68,7 @@ public class Tech {
 	private boolean progress = false;
 	
 	public TechType getType() { return type; }
+	public Tech[] getRequiredTech() { return required; }
 	public String getName() { return name; }
 	public String getImage() { return image; }
 	public int getTime() { return time; }
@@ -75,6 +83,26 @@ public class Tech {
 	public void setType(TechType type) {
 		this.type = type;
 	}
+	
+	public boolean canResearch(Tech[][] techTree) {
+		ArrayList<Tech> unlockedTech = new ArrayList<>();
+		for(int y = 0; y < techTree.length; y++) {
+			for(int x = 0; x < techTree[y].length; x++) {
+				if(techTree[y][x] != null) {
+					if(techTree[y][x].isUnlocked()) unlockedTech.add(techTree[y][x]);
+				}
+			}
+		}
+		
+		int count = 0;
+		for(int i = 0; i < required.length; i++) {
+			System.out.println(required[i].getType().name());
+			if(unlockedTech.contains(required[i])) count++;
+		}
+		
+		return count == required.length;
+	}
+	
 	
 	public boolean isUnlocked() { return unlocked; }
 	public void setUnlocked(boolean b) { unlocked = b; }

@@ -42,8 +42,8 @@
 	<require>Tilling IV</require>
 	<name>Tilling V</name>
 	<image>tilling_5</image>
-	<cost>250</cost>
-	<time>250</time>
+	<cost>300</cost>
+	<time>300</time>
 	<modifier>10</modifier>
 </tech>
 
@@ -88,8 +88,8 @@
 	<require>Watering IV</require>
 	<name>Watering V</name>
 	<image>watering_5</image>
-	<cost>250</cost>
-	<time>250</time>
+	<cost>300</cost>
+	<time>300</time>
 	<modifier>10</modifier>
 </tech>
 
@@ -134,8 +134,8 @@
 	<require>Seeding IV</require>
 	<name>Seeding V</name>
 	<image>seeding_5</image>
-	<cost>250</cost>
-	<time>250</time>
+	<cost>300</cost>
+	<time>300</time>
 	<modifier>10</modifier>
 </tech>
 
@@ -185,8 +185,8 @@
 	<require>Harvest IV</require>
 	<name>Harvest V</name>
 	<image>harvest_5</image>
-	<cost>250</cost>
-	<time>250</time>
+	<cost>300</cost>
+	<time>300</time>
 	<modifier>10</modifier>
 </tech>
 </root>

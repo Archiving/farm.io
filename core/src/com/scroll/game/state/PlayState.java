@@ -275,7 +275,6 @@ public class PlayState extends State {
 		if(!shopButton.clicked) shopButton.image = new TextureRegion(Asset.instance().getTexture("shop_button"));
 		if(!settingsButton.clicked) settingsButton.image = new TextureRegion(Asset.instance().getTexture("settings_button"));
 		if(!quitButton.clicked) quitButton.image = new TextureRegion(Asset.instance().getTexture("quit_button"));
-		
 	}
 	
 	public Player getPlayer() { return player; }
