@@ -43,8 +43,8 @@ public class Tech {
 	@XmlAttribute(name="type")
 	private TechType type;
 	
-	@XmlElement(name="required")
-	private Tech[] required;
+	@XmlElement(name="require")
+	private String[] required;
 	
 	@XmlElement(name="name")
 	private String name;
@@ -53,7 +53,7 @@ public class Tech {
 	private String image;
 	
 	@XmlElement(name="time")
-	private int time;
+	private double time;
 	
 	@XmlElement(name="cost")
 	private int cost;
@@ -68,10 +68,10 @@ public class Tech {
 	private boolean progress = false;
 	
 	public TechType getType() { return type; }
-	public Tech[] getRequiredTech() { return required; }
+	public String[] getRequiredTech() { return required; }
 	public String getName() { return name; }
 	public String getImage() { return image; }
-	public int getTime() { return time; }
+	public double getTime() { return time; }
 	public int getCost() { return cost; }
 	public int getModifier() { return modifier; }
 	
@@ -85,18 +85,20 @@ public class Tech {
 	}
 	
 	public boolean canResearch(Tech[][] techTree) {
-		ArrayList<Tech> unlockedTech = new ArrayList<>();
+		if(required == null) return true;
+		ArrayList<String> unlockedTech = new ArrayList<>();
 		for(int y = 0; y < techTree.length; y++) {
 			for(int x = 0; x < techTree[y].length; x++) {
 				if(techTree[y][x] != null) {
-					if(techTree[y][x].isUnlocked()) unlockedTech.add(techTree[y][x]);
+					if(techTree[y][x].isUnlocked()) {
+						unlockedTech.add(techTree[y][x].getName());
+					}
 				}
 			}
 		}
 		
 		int count = 0;
 		for(int i = 0; i < required.length; i++) {
-			System.out.println(required[i].getType().name());
 			if(unlockedTech.contains(required[i])) count++;
 		}
 		

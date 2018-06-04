@@ -153,10 +153,11 @@ public class Main extends ApplicationAdapter {
 		asset.loadSeedTile("tomato");
 		asset.loadCropItem("tomato");
 		
-		asset.loadFont("xs_font", 9);
 		asset.loadFont("small_font", 10);
+		asset.loadFont("20_font", 20);
 		asset.loadFont("large_font", 96);
 		asset.loadFont("med_font", 40);
+		
 		asset.loadSound("select", "data/select.wav");
 		asset.loadSound("purchase", "data/purchase.wav");
 		asset.loadSound("click", "data/click.wav");

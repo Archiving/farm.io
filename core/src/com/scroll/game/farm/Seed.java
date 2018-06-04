@@ -32,7 +32,7 @@ public class Seed {
 				new TextureRegion(Asset.instance().getTexture("crop_tile.chili")),
 				new TextureRegion(Asset.instance().getTexture("seed.corn")),
 				new TextureRegion(Asset.instance().getTexture("crop.chili")),
-				35.0f, 10, 3),
+				35.0f, 1000, 3),
 		OLIVE(new TextureRegion(Asset.instance().getTexture("seed_tile.olive")),
 				new TextureRegion(Asset.instance().getTexture("crop_tile.olive")),
 				new TextureRegion(Asset.instance().getTexture("seed.corn")),

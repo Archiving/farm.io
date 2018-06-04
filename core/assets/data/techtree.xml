@@ -9,7 +9,7 @@
 	<modifier>2</modifier>
 </tech>
 <tech type="TILLING">
-	<require>Tilling II</require>
+	<require>Tilling I</require>
 	<name>Tilling II</name>
 	<image>tilling_2</image>
 	<cost>150</cost>

@@ -253,6 +253,7 @@ public class Player extends MapObject {
 	
 	@Override
 	public void update(float dt) {
+		Var.PLAYER_MONEY = money;
 		//Selected seed is the first in the array.
 		if(seeds.size() > 0) selectedSeed = seeds.get(0);
 		else { selectedSeed = null; }

@@ -3,6 +3,7 @@ package com.scroll.game.state;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.scroll.game.Var;
+import com.scroll.game.state.entities.Player;
 
 public abstract class State {
 
@@ -17,4 +18,5 @@ public abstract class State {
 	
 	public abstract void render(SpriteBatch sb);
 	public abstract void update(float dt);
+
 }

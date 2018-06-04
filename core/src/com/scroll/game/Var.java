@@ -8,4 +8,6 @@ public class Var {
 	public static final String TITLE = "farm.io";
 	public static final int NUM_SEEDS_START = 20;
 	public static float MUSIC_VOL = 0.5f;
+	public static int PLAYER_MONEY = 0;
+	
 }

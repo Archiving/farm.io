@@ -155,7 +155,7 @@ public class PlayState extends State {
 			font.draw(sb, seedName, 30, Var.HEIGHT - 16);
 		}
 		else { font.draw(sb, "No Seed", 18, Var.HEIGHT - 16); }
-		font.draw(sb, "$"+Integer.toString(player.getMoney()), 40, Var.HEIGHT - 40);
+		font.draw(sb, "$"+Integer.toString(Var.PLAYER_MONEY), 40, Var.HEIGHT - 40);
 		
 		font.draw(sb, builder.toString(), 10, Var.HEIGHT - 64);
 		font.draw(sb, "Seeds Left: " + player.getSeedInventory().size(), 10, 415);
@@ -172,6 +172,7 @@ public class PlayState extends State {
 
 	@Override
 	public void update(float dt) {
+		System.out.println(progressTech.isEmpty() ? "1" : "0");
 		globalTime += 2880 * dt;
 		int day = (int) TimeUnit.SECONDS.toDays((int)globalTime);
 		if(day == playTime) {
@@ -279,6 +280,9 @@ public class PlayState extends State {
 	
 	public Player getPlayer() { return player; }
 	public Region getRegion() { return region; }
-	
+
+	public void setPlayer(Player p) {
+		this.player = p;
+	}
 	
 }

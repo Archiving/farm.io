@@ -8,23 +8,20 @@ import com.scroll.game.handler.Asset;
 
 public class RegionHUD {
 
-	public TextureRegion frame;
 	public TextureRegion flag;
 	public BitmapFont font;
 	public Region selectedRegion;
 	public StringBuilder builder;
 	
 	public RegionHUD() {
-		frame = new TextureRegion(Asset.instance().getTexture("map_frame"));
 		font = Asset.instance().getFont("small_font");
 		builder = new StringBuilder();
 	}
 	
-	public void draw(SpriteBatch sb) {
-		sb.draw(frame, 30, 30);
+	public void draw(SpriteBatch sb, int w, int h) {
 		if(flag != null) {
-			sb.draw(flag, 35, 36);
-			font.draw(sb, "Click location tag to start.",  45+frame.getRegionWidth(), frame.getRegionHeight()-22);
+			sb.draw(flag, w - 37, 32);
+			font.draw(sb, "Click location tag to start.",  45+w, h-22);
 		}
 		if(selectedRegion != null) {
 			builder.setLength(0);
@@ -39,12 +36,12 @@ public class RegionHUD {
 				builder.append(textName);
 				if(i != selectedRegion.affectedCrops.length - 1) builder.append(", ");
 			}
-			font.draw(sb, builder.toString(), 45+frame.getRegionWidth(), 24+frame.getRegionHeight());
-			font.draw(sb, "Time Ratio for Crops: x" + selectedRegion.timeRatio, 45+frame.getRegionWidth(), frame.getRegionHeight());
+			font.draw(sb, builder.toString(), 45+w, 24+h);
+			font.draw(sb, "Time Ratio for Crops: x" + selectedRegion.timeRatio, 45+w, h);
 			if(flag == null) {
-				font.draw(sb, Float.toString(selectedRegion.travelCost), 30 + font.getSpaceWidth() * Float.toString(selectedRegion.travelCost).length()/2, 80);
+				font.draw(sb, "$" + (int)selectedRegion.travelCost, 30 + font.getSpaceWidth() * Float.toString(selectedRegion.travelCost).length()/2, 80);
 				sb.draw(new TextureRegion(Asset.instance().getTexture("cash")), 35, 35);
-				font.draw(sb, "Click location tag to buy.",  35+frame.getRegionWidth()+10, frame.getRegionHeight()-22);
+				font.draw(sb, "Click location tag to buy.",  45+w, h-22);
 			}
 			
 		}

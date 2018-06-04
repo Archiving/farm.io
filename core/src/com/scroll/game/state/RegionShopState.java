@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.scroll.game.Var;
 import com.scroll.game.handler.Asset;
 import com.scroll.game.ui.LocationButton;
@@ -17,7 +19,6 @@ public class RegionShopState extends State {
 	}
 
 	public State previousState;
-	public TextureRegion sign;
 	public BitmapFont font;
 	public BitmapFont smFont;
 	public LocationButton selectedButton;
@@ -25,28 +26,44 @@ public class RegionShopState extends State {
 	public boolean popup = false;
 	public String popupText;
 	public TextureRegion pixel;
+	public int x, y;	
 	
-	public RegionShopState(GSM gsm, State previousState, LocationButton selectedButton, int currentMoney) {
+	public RegionShopState(GSM gsm, State previousState, LocationButton selectedButton, int currentMoney, int x, int y) {
 		super(gsm);
 		this.previousState = previousState;
 		this.selectedButton = selectedButton;
 		this.currentMoney = currentMoney;
+		this.x = x;
+		this.y = y;
 		
-		smFont = Asset.instance().getFont("small_font");
+		smFont = Asset.instance().getFont("20_font");
 		font = Asset.instance().getFont("med_font");
-		sign = new TextureRegion(Asset.instance().getTexture("sign"));
 		pixel = new TextureRegion(Asset.instance().getTexture("pixel"));
 	}
 	
 	@Override
 	public void render(SpriteBatch sb) {
 		previousState.render(sb);
+		ShapeRenderer renderer = new ShapeRenderer();
+		int w = 850;
+		int h = 580;
+		renderer.setColor(Color.BLACK);
+		renderer.begin(ShapeType.Filled);
+		renderer.rect(x,y,w,h);
+		renderer.end();
+		
+		renderer.begin(ShapeType.Line);
+		renderer.setColor(Color.WHITE);
+		renderer.line(x,y, x+w,y);
+		renderer.line(x,y,x,y+h);
+		renderer.line(x,y + h, x+w, y+h);
+		renderer.line(x+w, y+h, x+w, y);
+		renderer.end();
+		
 		sb.begin();
-		sb.draw(sign, previousState.cam.viewportWidth/2 - 45, previousState.cam.viewportHeight/2);
 		sb.draw(new TextureRegion(Asset.instance().getTexture("regionbg_" + selectedButton.region.regionTag)), 375, 300);
 		sb.draw(new TextureRegion(Asset.instance().getTexture("flag_" + selectedButton.region.regionTag)), 415, 715);
 		font.draw(sb, selectedButton.locationName, 490, 750);
-		smFont.draw(sb, "Campaign Time: 1/2 year", 490, 700);
 		
 		StringBuilder builder = new StringBuilder();
 		for(int i = 0; i < selectedButton.region.affectedCrops.length; i++) {
@@ -57,10 +74,12 @@ public class RegionShopState extends State {
 			if(i != selectedButton.region.affectedCrops.length - 1) builder.append(", ");
 		}
 		
-		smFont.draw(sb, "Special Crops: " + builder.toString(), 490, 680);
-		smFont.draw(sb, "Travel Cost: $" + selectedButton.region.travelCost, 490, 660);
-		smFont.draw(sb, "Time Ratio: x" + selectedButton.region.timeRatio, 490, 640);
-		smFont.draw(sb, "Press [SPACE] to buy", 490, 620);
+		smFont.draw(sb, "Travel Cost: $" + selectedButton.region.travelCost, 490, 680);
+		
+		smFont.draw(sb, "Campaign Time: 0.5 years", 490, 650);
+		smFont.draw(sb, "Special Crops: " + builder.toString(), 490, 620);
+		smFont.draw(sb, "Time Ratio: x" + selectedButton.region.timeRatio, 490, 590);
+		smFont.draw(sb, "Press [SPACE] to buy", 490, 560);
 		
 		if(popup) {
 			sb.setColor(Color.BLACK);

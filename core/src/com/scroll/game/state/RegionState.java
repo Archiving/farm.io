@@ -11,6 +11,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector3;
 import com.scroll.game.Var;
 import com.scroll.game.farm.Seed.Region;
@@ -46,19 +48,19 @@ public class RegionState extends State {
 		largeFont = Asset.instance().getFont("large_font");
 		helpButton = new UIButton(975, 50, 32, 32, new TextureRegion(Asset.instance().getTexture("help_button")), new TextureRegion(Asset.instance().getTexture("help_button_clicked")));
 		
-		LocationButton america = new LocationButton(175, 795, 16, 16, Region.NORTH_AMERICA, "Moab, Utah", false);
+		LocationButton america = new LocationButton(135, 825, 16, 16, Region.NORTH_AMERICA, "Seattle, USA", false);
 		LocationButton central_america = new LocationButton(250, 650, 16, 16, Region.CENTRAL_AMERICA, "Mexico City, Mexico", false);
 		LocationButton north_africa = new LocationButton(650, 750, 16, 16, Region.NORTH_AFRICA, "Fes, Morroco", false);
 		LocationButton west_africa = new LocationButton(650, 600, 16, 16, Region.WEST_AFRICA, "Porto-Novo, Benin", false);
-		LocationButton east_africa = new LocationButton(855, 630, 16, 16, Region.EAST_AFRICA, "Dire Dawa, Ethiopia", false);
-		LocationButton west_asia = new LocationButton(875, 700, 16, 16, Region.WEST_ASIA, "Medina, Saudi Arabia", false);
+		LocationButton east_africa = new LocationButton(855, 630, 16, 16, Region.EAST_AFRICA, "Addis Ababa, Ethiopia", false);
+		LocationButton west_asia = new LocationButton(835, 740, 16, 16, Region.WEST_ASIA, "Cairo, Egypt", false);
 		LocationButton south_eu = new LocationButton(740, 800, 16, 16, Region.SOUTH_EU, "Naples, Italy", false);
 		LocationButton west_eu = new LocationButton(670, 860, 16, 16, Region.WEST_EU, "Cambridge, England", false);
 		LocationButton east_eu = new LocationButton(840, 860, 16, 16, Region.EAST_EU, "Moscow, Russia", false);
 		LocationButton central_asia = new LocationButton(970, 760, 16, 16, Region.CENTRAL_ASIA, "Kabul, Afghanistan", false);
 		LocationButton east_asia = new LocationButton(1190, 740, 16, 16, Region.EAST_ASIA, "Hunan, China", false);
 		LocationButton se_asia = new LocationButton(1180, 550, 16, 16, Region.SOUTH_EAST_ASIA, "Kuala Lumpur, Malaysia", false);
-		LocationButton south_america = new LocationButton(475, 500, 16, 16, Region.SOUTH_AMERICA, "Cruz das Almas, Brazil", false);
+		LocationButton south_america = new LocationButton(475, 470, 16, 16, Region.SOUTH_AMERICA, "Rio de Janeiro, Brazil", false);
 		LocationButton south_africa = new LocationButton(780, 425, 16, 16, Region.SOUTH_AFRICA, "Johannesburg, South Africa", false);
 		LocationButton oceania = new LocationButton(1350, 375, 16, 16, Region.OCEANIA, "Melbourne, Australia", false);
 		LocationButton central_africa = new LocationButton(810, 545, 16, 16, Region.CENTRAL_AFRICA, "Kampala, Uganda", false);
@@ -94,6 +96,12 @@ public class RegionState extends State {
 	
 	@Override
 	public void render(SpriteBatch sb) {
+		int w = 70;
+		int h = 70;
+		
+		int x = 25;
+		int y = 25;
+		
 		sb.setProjectionMatrix(cam.combined);
 		sb.begin();
 		sb.setColor(Color.GRAY);
@@ -108,8 +116,24 @@ public class RegionState extends State {
 		sb.setColor(1.0f, 1.0f, 1.0f, 1.0f);
 		largeFont.draw(sb, "farm.io", cam.viewportWidth / 2 -  7 * largeFont.getSpaceWidth() / 2, 100);
 		largeFont.draw(sb, "$" + currentMoney, 1400 - layout.width, 950);
-		hud.draw(sb);
 		helpButton.draw(sb);
+		sb.end();
+		
+		ShapeRenderer renderer = new ShapeRenderer();renderer.setColor(Color.BLACK);
+		renderer.begin(ShapeType.Filled);
+		renderer.rect(x,y,w,h);
+		renderer.end();
+		
+		renderer.begin(ShapeType.Line);
+		renderer.setColor(Color.WHITE);
+		renderer.line(x,y, x+w,y);
+		renderer.line(x,y,x,y+h);
+		renderer.line(x,y + h, x+w, y+h);
+		renderer.line(x+w, y+h, x+w, y);
+		renderer.end();
+		
+		sb.begin();
+		hud.draw(sb, w, h);
 		sb.end();
 	}
 	
@@ -139,7 +163,7 @@ public class RegionState extends State {
 					selectedRegion = button.region;
 					if(Gdx.input.isTouched()) {
 						Asset.instance().getSound("open").play(0.5f);
-						gsm.push(new RegionShopState(gsm, this, button, currentMoney));
+						gsm.push(new RegionShopState(gsm, this, button, currentMoney, Var.WIDTH / 2 - 45, Var.HEIGHT / 2));
 					}
 				}
 			}
@@ -156,12 +180,12 @@ public class RegionState extends State {
 				if(Gdx.input.isTouched()) {
 					helpButton.click();
 					GuideBlock[] helpBlocks = new GuideBlock[]{
-							new GuideBlock(new TextureRegion(Asset.instance().getTexture("help_guide_block_1")), "Click the location tag to open a shop dialog.", 415, 630, 128, 128),
-							new GuideBlock(new TextureRegion(Asset.instance().getTexture("help_guide_block_2")), "The amount of money in the top left comes from previous farming campaigns.", 415, 480, 128, 128),
-							new GuideBlock(new TextureRegion(Asset.instance().getTexture("help_guide_block_3")), "Use money to travel to new places and get higher quality crops!", 415, 330, 128, 128)
+							new GuideBlock(new TextureRegion(Asset.instance().getTexture("help_guide_block_1")), "Click the location tag to open a shop dialog.", 415, 555, 128, 128),
+							new GuideBlock(new TextureRegion(Asset.instance().getTexture("help_guide_block_2")), "The amount of money in the top left comes from previous farming campaigns.", 415, 405, 128, 128),
+							new GuideBlock(new TextureRegion(Asset.instance().getTexture("help_guide_block_3")), "Use money to travel to new places and get higher quality crops!", 415, 255, 128, 128)
 					};
 					
-					gsm.push(new RegionHelpState(gsm, helpBlocks, this, Var.WIDTH/2-50, Var.HEIGHT/2));
+					gsm.push(new RegionHelpState(gsm, helpBlocks, this, Var.WIDTH/2-200, Var.HEIGHT/2-75));
 					
 				}
 				else {
