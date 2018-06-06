@@ -226,13 +226,11 @@ public class TechnologyState extends State {
 				
 				if (ok) {
 					// successful purchase
-					System.out.println(p.getMoney());
-					Var.PLAYER_MONEY = p.getMoney();
 					Asset.instance().getSound("purchase").play(0.5f);
 					techTree[row][col].setProgress(true);
 					popupText = "Bought research!";
 					showingPopup = true;
-					((PlayState)previousState).setPlayer(p);
+					((PlayState) previousState).setPlayer(p);
 				} else {
 					popupText = "Not enough money!";
 					if(inProgress) popupText = "Already researching!";

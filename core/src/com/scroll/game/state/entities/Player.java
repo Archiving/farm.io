@@ -253,7 +253,6 @@ public class Player extends MapObject {
 	
 	@Override
 	public void update(float dt) {
-		Var.PLAYER_MONEY = money;
 		//Selected seed is the first in the array.
 		if(seeds.size() > 0) selectedSeed = seeds.get(0);
 		else { selectedSeed = null; }
@@ -351,8 +350,11 @@ public class Player extends MapObject {
 	
 	public boolean buyTech(Tech purchase) {
 		if(this.money - purchase.getCost() < 0) return false;
-		if(currentResearch != null) return false;
-		currentResearch = purchase;
+		this.money -= purchase.getCost();
 		return true;
+	}
+
+	public void setMoney(int money) {
+		this.money = money;
 	}
 }
