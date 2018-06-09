@@ -55,7 +55,7 @@
 	<modifier>2</modifier>
 </tech>
 <tech type="WATERING">
-	<require>Watering II</require>
+	<require>Watering I</require>
 	<name>Watering II</name>
 	<image>watering_2</image>
 	<cost>150</cost>
@@ -101,7 +101,7 @@
 	<modifier>2</modifier>
 </tech>
 <tech type="SEEDING">
-	<require>Seeding II</require>
+	<require>Seeding I</require>
 	<name>Seeding II</name>
 	<image>seeding_2</image>
 	<cost>150</cost>

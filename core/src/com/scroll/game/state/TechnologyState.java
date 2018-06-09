@@ -10,8 +10,10 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.scroll.game.Var;
 import com.scroll.game.handler.Asset;
+import com.scroll.game.handler.TechScanner;
 import com.scroll.game.handler.XmlDeserializer;
 import com.scroll.game.state.entities.Player;
 import com.scroll.game.tech.Root;
@@ -32,16 +34,16 @@ public class TechnologyState extends State {
 	public String popupText;
 	public boolean showingPopup;
 	public TextureRegion lock;
-	
+
 	protected TechnologyState(GSM gsm, State previousState, int x, int y) {
 		super(gsm);
 		this.x = x;
 		this.y = y;
 		this.previousState = previousState;
-
+		
 		pixel = new TextureRegion(Asset.instance().getTexture("pixel"));
 		lock = new TextureRegion(Asset.instance().getTexture("lock"));
-		
+
 		techTree = new Tech[5][5];
 
 		try {
@@ -51,8 +53,7 @@ public class TechnologyState extends State {
 
 				techs[i].setRow(techs[i].getType().index - 1);
 				techs[i].setCol(Integer.parseInt(techs[i].getImage().replaceAll("([^0-9])+", "")) - 1);
-				
-				
+
 				techTree[techs[i].getRow()][techs[i].getCol()] = techs[i];
 			}
 		} catch (Exception e) {
@@ -60,7 +61,7 @@ public class TechnologyState extends State {
 		}
 
 		selectedTech = techTree[0][0];
-		
+
 		row = selectedTech.getRow();
 		col = selectedTech.getCol();
 
@@ -74,19 +75,18 @@ public class TechnologyState extends State {
 	@Override
 	public void render(SpriteBatch sb) {
 		
+		
 		previousState.render(sb);
 		ShapeRenderer renderer = new ShapeRenderer();
 		renderer.begin(ShapeRenderer.ShapeType.Filled);
 		renderer.setColor(Color.BLACK);
-		renderer.rect(x, y, 1300, 800);
+		renderer.rect(0, y, 2000, 800);
 		renderer.end();
 
 		renderer.begin(ShapeRenderer.ShapeType.Line);
 		renderer.setColor(Color.WHITE);
-		renderer.line(x, y, x + 1300, y);
-		renderer.line(x, y, x, y + 800);
-		renderer.line(x + 1300, y, x + 1300, y + 800);
-		renderer.line(x, y + 800, x + 1300, y + 800);
+		renderer.line(0, y, 2000, y);
+		renderer.line(0, y + 800, 2000, y + 800);
 		renderer.end();
 
 		sb.setProjectionMatrix(cam.combined);
@@ -100,36 +100,36 @@ public class TechnologyState extends State {
 
 					int posX = this.x + 85 * x;
 					int posY = 260 + this.y - 80 * y;
-					if (!techTree[y][x].isUnlocked() && !techTree[y][x].isSelected() && !techTree[y][x].canResearch(techTree)) sb.setColor(Color.GRAY);
+
+					if (!techTree[y][x].isUnlocked() && !techTree[y][x].isSelected()
+							&& !techTree[y][x].canResearch(techTree))
+						sb.setColor(Color.GRAY);
 					sb.draw(image, posX, posY, 16, 16);
 					sb.setColor(1, 1, 1, 1);
-					if(!techTree[y][x].isUnlocked() && !techTree[y][x].canResearch(techTree)) sb.draw(lock, posX, posY);
+					if (!techTree[y][x].isUnlocked() && !techTree[y][x].canResearch(techTree))
+						sb.draw(lock, posX, posY);
 					String name = techTree[y][x].getName();
 					String cost = "Cost: $" + techTree[y][x].getCost();
-		
-					BigDecimal d = new BigDecimal(techTree[y][x].getTime()/24);
+
+					BigDecimal d = new BigDecimal(techTree[y][x].getTime() / 24);
 					String time = d.setScale(1, RoundingMode.DOWN) + " days";
-					
-					if(techTree[y][x].canResearch(techTree)) {
+
+					if (techTree[y][x].canResearch(techTree)) {
 						smallFont.setColor(Color.GREEN);
 					}
 					smallFont.draw(sb, name, posX - (name.length() * smallFont.getSpaceWidth()) / 2, posY - 5);
 					smallFont.setColor(Color.WHITE);
 					smallFont.draw(sb, cost, posX - (cost.length() * smallFont.getSpaceWidth()) / 2, posY - 15);
 					smallFont.draw(sb, time, posX - (time.length() * smallFont.getSpaceWidth()) / 2, posY - 25);
-					
-					if ((x + 1) < techTree[y].length) {
-						int nextX = this.x + 85 * (x + 1);
-						sb.draw(pixel, posX + 16, posY + 8, nextX - posX, 1);
-					}
+
 				}
 			}
 		}
 		int posx = this.x + 85 * (col);
 		int posy = 260 + this.y - 80 * (row);
-		
+
 		sb.setColor(Color.YELLOW);
-		if(techTree[row][col].canResearch(techTree)) {
+		if (techTree[row][col].canResearch(techTree)) {
 			sb.setColor(Color.GREEN);
 		}
 		sb.draw(pixel, posx, posy, 16, 1);
@@ -145,10 +145,36 @@ public class TechnologyState extends State {
 			sb.draw(pixel, Var.WIDTH / 2 - 100, Var.HEIGHT / 2 - 25, 1, 50);
 			sb.draw(pixel, Var.WIDTH / 2 - 100, Var.HEIGHT / 2 + 25, 200, 1);
 			sb.draw(pixel, Var.WIDTH / 2 + 100, Var.HEIGHT / 2 - 25, 1, 50);
-			smallFont.draw(sb, popupText, (Var.WIDTH - popupText.length() * smallFont.getSpaceWidth())/2 - 5, 254);
+			smallFont.draw(sb, popupText, (Var.WIDTH - popupText.length() * smallFont.getSpaceWidth()) / 2 - 5, 254);
 		}
 
 		sb.end();
+		
+		renderer.setProjectionMatrix(cam.combined);
+		renderer.begin(ShapeType.Line);
+		for (int y = 0; y < techTree.length; y++) {
+			for (int x = 0; x < techTree[y].length; x++) {
+				if (techTree[y][x] != null) {
+					int posX = this.x + 85 * x;
+					int posY = 260 + this.y - 80 * y;
+					Tech requiredTech = null;
+					String[] r = techTree[y][x].getRequiredTech();
+
+					if (r != null) {
+						requiredTech = TechScanner.scanTech(techTree, techTree[y][x], r[r.length - 1]);
+						if (requiredTech != null) {
+							// Draw a line from the current tech to the last required tech of the current
+							// tech
+							int newX = this.x + 85 * requiredTech.getCol();
+							int newY = 260 + this.y - 80 * requiredTech.getRow();
+							renderer.line(newX + 16, newY + 8, posX, posY + 8);
+						}
+					}
+				}
+			}
+		}
+
+		renderer.end();
 	}
 
 	@Override
@@ -189,6 +215,7 @@ public class TechnologyState extends State {
 					techTree[row][col].setSelected(true);
 				}
 			}
+			
 
 			if (Gdx.input.isKeyJustPressed(Keys.RIGHT)) {
 				Asset.instance().getSound("select").play(0.7f);
@@ -215,15 +242,16 @@ public class TechnologyState extends State {
 					techTree[row][col].setSelected(true);
 				}
 			}
-
+			
+			
 			if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
 				Player p = ((PlayState) previousState).getPlayer();
-				
+
 				boolean ok = p.buyTech(techTree[row][col]);
 				boolean inProgress = techTree[row][col].isInProgress();
 				boolean unlocked = techTree[row][col].isUnlocked();
 				boolean canResearch = techTree[row][col].canResearch(techTree);
-				
+
 				if (ok) {
 					// successful purchase
 					Asset.instance().getSound("purchase").play(0.5f);
@@ -233,9 +261,12 @@ public class TechnologyState extends State {
 					((PlayState) previousState).setPlayer(p);
 				} else {
 					popupText = "Not enough money!";
-					if(inProgress) popupText = "Already researching!";
-					if(unlocked) popupText = "Already unlocked!";
-					if(!canResearch) popupText = "Missing required tech!";
+					if (inProgress)
+						popupText = "Already researching!";
+					if (unlocked)
+						popupText = "Already unlocked!";
+					if (!canResearch)
+						popupText = "Missing required tech!";
 					showingPopup = true;
 				}
 			}

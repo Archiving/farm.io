@@ -119,7 +119,8 @@ public class RegionState extends State {
 		helpButton.draw(sb);
 		sb.end();
 		
-		ShapeRenderer renderer = new ShapeRenderer();renderer.setColor(Color.BLACK);
+		ShapeRenderer renderer = new ShapeRenderer();
+		renderer.setColor(Color.BLACK);
 		renderer.begin(ShapeType.Filled);
 		renderer.rect(x,y,w,h);
 		renderer.end();
