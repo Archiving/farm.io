@@ -46,7 +46,7 @@ public class WarningState extends State {
 	@Override
 	public void update(float dt) {
 		if(Gdx.input.isKeyJustPressed(Keys.SPACE)) {
-			gsm.push(new PlayState(gsm, (PlayState)playState));
+			gsm.push(new PlayState(gsm, (PlayState)playState, ((PlayState)playState).getPlayer().getMoney()));
 		}
 		else if(Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
 			((PlayState)playState).music.stop();

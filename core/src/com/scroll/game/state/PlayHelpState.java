@@ -56,7 +56,7 @@ public class PlayHelpState extends State {
 
 	@Override
 	public void update(float dt) {
-		if(Gdx.input.isKeyPressed(Keys.ESCAPE)) gsm.push(new PlayState(gsm, (PlayState)previousState));;
+		if(Gdx.input.isKeyPressed(Keys.ESCAPE)) gsm.push(new PlayState(gsm, (PlayState)previousState, ((PlayState)previousState).getPlayer().getMoney()));
 	}
 
 }

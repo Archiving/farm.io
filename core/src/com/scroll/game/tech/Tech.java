@@ -60,7 +60,10 @@ public class Tech {
 	
 	@XmlElement(name="modifier")
 	private int modifier;
-
+	
+	@XmlElement(name="colOffset")
+	private int colOffset;
+	
 	private int row, col;
 	
 	private boolean unlocked = false;
@@ -112,5 +115,6 @@ public class Tech {
 	public void setSelected(boolean b) { selected = b; }
 	public boolean isInProgress() { return progress; }
 	public void setProgress(boolean b) { progress = b; }
+	public int getColOffset() { return colOffset; }
 	
 }

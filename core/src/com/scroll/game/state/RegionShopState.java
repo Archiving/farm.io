@@ -74,12 +74,12 @@ public class RegionShopState extends State {
 			if(i != selectedButton.region.affectedCrops.length - 1) builder.append(", ");
 		}
 		
-		smFont.draw(sb, "Travel Cost: $" + selectedButton.region.travelCost, 490, 680);
+		smFont.draw(sb, "Travel Cost: $" + selectedButton.region.travelCost, 450, 680);
 		
-		smFont.draw(sb, "Campaign Time: 0.5 years", 490, 650);
-		smFont.draw(sb, "Special Crops: " + builder.toString(), 490, 620);
-		smFont.draw(sb, "Time Ratio: x" + selectedButton.region.timeRatio, 490, 590);
-		smFont.draw(sb, "Press [SPACE] to buy", 490, 560);
+		smFont.draw(sb, "Campaign Time: 0.5 years", 450, 650);
+		smFont.draw(sb, "Special Crops: " + builder.toString(), 450, 620);
+		smFont.draw(sb, "Time Ratio: x" + selectedButton.region.timeRatio, 450, 590);
+		smFont.draw(sb, "Press [SPACE] to buy", 450, 560);
 		
 		if(popup) {
 			sb.setColor(Color.BLACK);

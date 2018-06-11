@@ -44,16 +44,15 @@ public class TechnologyState extends State {
 		pixel = new TextureRegion(Asset.instance().getTexture("pixel"));
 		lock = new TextureRegion(Asset.instance().getTexture("lock"));
 
-		techTree = new Tech[5][5];
-
 		try {
 			Root r = (Root) XmlDeserializer.deserialize("tech", Root.class);
+			techTree = new Tech[r.getRow()][r.getCol()];
 			Tech[] techs = r.getTech();
 			for (int i = 0; i < techs.length; i++) {
-
+				
 				techs[i].setRow(techs[i].getType().index - 1);
 				techs[i].setCol(Integer.parseInt(techs[i].getImage().replaceAll("([^0-9])+", "")) - 1);
-
+				
 				techTree[techs[i].getRow()][techs[i].getCol()] = techs[i];
 			}
 		} catch (Exception e) {
@@ -98,7 +97,7 @@ public class TechnologyState extends State {
 					TextureRegion image = new TextureRegion(Asset.instance().getTexture(techTree[y][x].getImage()), 16,
 							16);
 
-					int posX = this.x + 85 * x;
+					int posX = this.x + (x+techTree[y][x].getColOffset()) * 85;
 					int posY = 260 + this.y - 80 * y;
 
 					if (!techTree[y][x].isUnlocked() && !techTree[y][x].isSelected()
@@ -125,7 +124,8 @@ public class TechnologyState extends State {
 				}
 			}
 		}
-		int posx = this.x + 85 * (col);
+		
+		int posx = this.x + 85 * (col + selectedTech.getColOffset());
 		int posy = 260 + this.y - 80 * (row);
 
 		sb.setColor(Color.YELLOW);
@@ -137,6 +137,36 @@ public class TechnologyState extends State {
 		sb.draw(pixel, posx, posy + 16, 16, 1);
 		sb.draw(pixel, posx, posy, 1, 16);
 		sb.setColor(Color.WHITE);
+		sb.end();
+		
+		renderer.setProjectionMatrix(cam.combined);
+		renderer.begin(ShapeType.Line);
+		for (int y = 0; y < techTree.length; y++) {
+			for (int x = 0; x < techTree[y].length; x++) {
+				if (techTree[y][x] != null) {
+					int posX = this.x + 85 * (x + techTree[y][x].getColOffset());
+					int posY = 260 + this.y - 80 * y;
+					Tech requiredTech = null;
+					String[] r = techTree[y][x].getRequiredTech();
+
+					if (r != null) {
+						requiredTech = TechScanner.scanTech(techTree, techTree[y][x], r[r.length - 1]);
+						if (requiredTech != null) {
+							// Draw a line from the current tech to the last required tech of the current
+							// tech
+							int newX = this.x + 85 * (requiredTech.getCol()+requiredTech.getColOffset());
+							int newY = 260 + this.y - 80 * requiredTech.getRow();
+							renderer.line(newX + 16, newY + 8, posX, posY + 8);
+						}
+					}
+				}
+			}
+		}
+
+		renderer.end();
+		
+		sb.setProjectionMatrix(cam.combined);
+		sb.begin();		
 		if (showingPopup) {
 			sb.setColor(Color.BLACK);
 			sb.draw(pixel, Var.WIDTH / 2 - 100, Var.HEIGHT / 2 - 25, 200, 50);
@@ -147,39 +177,12 @@ public class TechnologyState extends State {
 			sb.draw(pixel, Var.WIDTH / 2 + 100, Var.HEIGHT / 2 - 25, 1, 50);
 			smallFont.draw(sb, popupText, (Var.WIDTH - popupText.length() * smallFont.getSpaceWidth()) / 2 - 5, 254);
 		}
-
 		sb.end();
-		
-		renderer.setProjectionMatrix(cam.combined);
-		renderer.begin(ShapeType.Line);
-		for (int y = 0; y < techTree.length; y++) {
-			for (int x = 0; x < techTree[y].length; x++) {
-				if (techTree[y][x] != null) {
-					int posX = this.x + 85 * x;
-					int posY = 260 + this.y - 80 * y;
-					Tech requiredTech = null;
-					String[] r = techTree[y][x].getRequiredTech();
-
-					if (r != null) {
-						requiredTech = TechScanner.scanTech(techTree, techTree[y][x], r[r.length - 1]);
-						if (requiredTech != null) {
-							// Draw a line from the current tech to the last required tech of the current
-							// tech
-							int newX = this.x + 85 * requiredTech.getCol();
-							int newY = 260 + this.y - 80 * requiredTech.getRow();
-							renderer.line(newX + 16, newY + 8, posX, posY + 8);
-						}
-					}
-				}
-			}
-		}
-
-		renderer.end();
 	}
 
 	@Override
 	public void update(float dt) {
-
+		
 		if (showingPopup) {
 			if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
 				showingPopup = false;
@@ -242,7 +245,8 @@ public class TechnologyState extends State {
 					techTree[row][col].setSelected(true);
 				}
 			}
-			
+
+			selectedTech = techTree[row][col];
 			
 			if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
 				Player p = ((PlayState) previousState).getPlayer();
@@ -255,7 +259,6 @@ public class TechnologyState extends State {
 				if (ok) {
 					// successful purchase
 					Asset.instance().getSound("purchase").play(0.5f);
-					techTree[row][col].setProgress(true);
 					popupText = "Bought research!";
 					showingPopup = true;
 					((PlayState) previousState).setPlayer(p);
@@ -272,7 +275,7 @@ public class TechnologyState extends State {
 			}
 
 			if (Gdx.input.isKeyJustPressed(Keys.ESCAPE) && !showingPopup) {
-				gsm.push(new PlayState(gsm, (PlayState) previousState, techTree));
+				gsm.push(new PlayState(gsm, (PlayState) previousState, techTree, ((PlayState)previousState).getPlayer().getMoney()));
 			}
 		}
 	}
