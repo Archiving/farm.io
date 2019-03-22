@@ -53,6 +53,8 @@ public class Player extends MapObject {
 	private Region region;
 	
 	private Tech currentResearch;
+	private int seedInvLimit;
+	
 	
 	public enum Action {
 		TILLING(0.5f),
@@ -66,8 +68,9 @@ public class Player extends MapObject {
 		}
 	};
 	
-	public Player(TileMap tm, Region region) {
+	public Player(TileMap tm, Region region, int seedInvLimit) {
 		super(tm);
+		this.seedInvLimit = seedInvLimit;
 		this.region = region;
 		Texture sheet = Asset.instance().getTexture("player");
 		TextureRegion[][] split = TextureRegion.split(sheet, 16, 16);
@@ -89,7 +92,7 @@ public class Player extends MapObject {
 		crops = new ArrayList<>();
 		seeds = new ArrayList<>();
 		pipes = new ArrayList<>();
-		for(int i = 0; i < Var.NUM_SEEDS_START; i++) {
+		for(int i = 0; i < this.seedInvLimit; i++) {
 			Random number = new Random();
 			seeds.add(region.affectedCrops[number.nextInt(region.affectedCrops.length)]);
 		}
@@ -226,6 +229,7 @@ public class Player extends MapObject {
 	
 	public boolean buySeed(Seed.Type purchase) {
 		if(this.money - purchase.cost < 0) return false;
+		if(seeds.size() == this.seedInvLimit)  return false;
 		this.money -= purchase.cost;
 		seeds.add(purchase);
 		return true;
@@ -357,4 +361,7 @@ public class Player extends MapObject {
 	public void setMoney(int money) {
 		this.money = money;
 	}
+	
+	public int getSeedInventoryLimit() { return seedInvLimit; }
+	public void setSeedInventoryLimit(int si) { this.seedInvLimit = si; }
 }
