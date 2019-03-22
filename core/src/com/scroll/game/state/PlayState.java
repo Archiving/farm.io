@@ -47,7 +47,7 @@ public class PlayState extends State {
 	
 	public Tech inProgress;
 	
-	public PlayState(GSM gsm, Region selectedRegion, int playTime) {
+	public PlayState(GSM gsm, Region selectedRegion, int playTime, int money) {
 		super(gsm);
 		this.region = selectedRegion;
 		this.playTime = playTime;
@@ -64,6 +64,7 @@ public class PlayState extends State {
 		
 		player = new Player(tm, selectedRegion, 16);
 		player.setPosition(100, 280);
+		player.setMoney(money);
 		truck = new Truck(tm);
 		
 		cam = new BoundCamera();
@@ -94,8 +95,8 @@ public class PlayState extends State {
 		quitButton = new UIButton(670, 460, 32, 32, new TextureRegion(Asset.instance().getTexture("quit_button")), new TextureRegion(Asset.instance().getTexture("quit_button_pressed")));
 	}
 	
-	public PlayState(GSM gsm, PlayState previousState) {
-		this(gsm, previousState.region, previousState.playTime);
+	public PlayState(GSM gsm, PlayState previousState, int money) {
+		this(gsm, previousState.region, previousState.playTime, money);
 		this.player = previousState.player;
 		this.farm = previousState.farm;
 		this.globalTime = previousState.globalTime;
@@ -103,8 +104,8 @@ public class PlayState extends State {
 		this.cam = previousState.cam;
 	}
 	
-	public PlayState(GSM gsm, PlayState previousState, Tech[][] currentTech) {
-		this(gsm, previousState);
+	public PlayState(GSM gsm, PlayState previousState, Tech[][] currentTech, int money) {
+		this(gsm, previousState, money);
 		for(int y = 0; y < currentTech.length; y++) {
 			for(int x = 0; x < currentTech[y].length; x++) {
 				if(currentTech[y][x] != null) {
@@ -190,6 +191,7 @@ public class PlayState extends State {
 
 	@Override
 	public void update(float dt) {
+		
 		System.out.println(progressTech.isEmpty() ? "1" : "0");
 		globalTime += 2880 * dt;
 		int day = (int) TimeUnit.SECONDS.toDays((int)globalTime);

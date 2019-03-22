@@ -355,6 +355,7 @@ public class Player extends MapObject {
 	public boolean buyTech(Tech purchase) {
 		if(this.money - purchase.getCost() < 0) return false;
 		this.money -= purchase.getCost();
+		purchase.setProgress(true);
 		return true;
 	}
 

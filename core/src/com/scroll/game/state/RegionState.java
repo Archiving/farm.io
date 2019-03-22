@@ -119,7 +119,8 @@ public class RegionState extends State {
 		helpButton.draw(sb);
 		sb.end();
 		
-		ShapeRenderer renderer = new ShapeRenderer();renderer.setColor(Color.BLACK);
+		ShapeRenderer renderer = new ShapeRenderer();
+		renderer.setColor(Color.BLACK);
 		renderer.begin(ShapeType.Filled);
 		renderer.rect(x,y,w,h);
 		renderer.end();
@@ -152,7 +153,7 @@ public class RegionState extends State {
 					button.setSelected(true);
 					if(Gdx.input.isTouched()) {
 						Asset.instance().getSound("click").play(0.5f);
-						gsm.push(new PlayState(gsm, selectedRegion, 100));
+						gsm.push(new PlayState(gsm, selectedRegion, 100, currentMoney));
 					}
 				}
 				else if(button.getBounds().contains(new Point((int)pos.x, (int)pos.y)) && !button.isUnlocked()) {

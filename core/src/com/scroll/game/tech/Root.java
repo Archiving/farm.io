@@ -12,6 +12,14 @@ public class Root {
 	@XmlElement(name="tech")
 	private Tech[] tech;
 	
-	public Tech[] getTech() { return tech; }
+	@XmlElement(name = "col")
+	private String col;
 	
+	@XmlElement(name = "row")
+	private String row;
+	
+	public Tech[] getTech() { return tech; }
+
+	public int getRow() { return Integer.parseInt(row); }
+	public int getCol() { return Integer.parseInt(col); }
 }

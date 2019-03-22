@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
 
-<root>	
+<root>
+<col>5</col>
+<row>5</row>
 <tech type="TILLING">
 	<name>Tilling I</name>
 	<image>tilling_1</image>
@@ -55,7 +57,7 @@
 	<modifier>2</modifier>
 </tech>
 <tech type="WATERING">
-	<require>Watering II</require>
+	<require>Watering I</require>
 	<name>Watering II</name>
 	<image>watering_2</image>
 	<cost>150</cost>
@@ -101,7 +103,7 @@
 	<modifier>2</modifier>
 </tech>
 <tech type="SEEDING">
-	<require>Seeding II</require>
+	<require>Seeding I</require>
 	<name>Seeding II</name>
 	<image>seeding_2</image>
 	<cost>150</cost>
@@ -140,16 +142,18 @@
 </tech>
 
 <tech type="HARVEST">
+	<colOffset>1</colOffset>
 	<name>Harvest I</name>
 	<image>harvest_1</image>
-	<require>Seeding III</require>
+	<require>Seeding I</require>
 	<cost>100</cost>
 	<time>100</time>
 	<modifier>2</modifier>
 </tech>
 <tech type="HARVEST">
-	<require>Seeding III</require>
-	<require>Harvest II</require>
+	<colOffset>1</colOffset>
+	<require>Seeding I</require>
+	<require>Harvest I</require>
 	<name>Harvest II</name>
 	<image>harvest_2</image>
 	<cost>150</cost>
@@ -157,7 +161,8 @@
 	<modifier>4</modifier>
 </tech>
 <tech type="HARVEST">
-	<require>Seeding III</require>
+	<colOffset>1</colOffset>
+	<require>Seeding I</require>
 	<require>Harvest I</require>
 	<require>Harvest II</require>
 	<name>Harvest III</name>
@@ -167,7 +172,8 @@
 	<modifier>6</modifier>
 </tech>
 <tech type="HARVEST">
-	<require>Seeding III</require>
+	<colOffset>1</colOffset>
+	<require>Seeding I</require>
 	<require>Harvest I</require>
 	<require>Harvest II</require>
 	<require>Harvest III</require>
@@ -178,7 +184,8 @@
 	<modifier>8</modifier>
 </tech>
 <tech type="HARVEST">
-	<require>Seeding III</require>
+	<colOffset>1</colOffset>
+	<require>Seeding I</require>
 	<require>Harvest I</require>
 	<require>Harvest II</require>
 	<require>Harvest III</require>
@@ -189,4 +196,5 @@
 	<time>300</time>
 	<modifier>10</modifier>
 </tech>
+
 </root>
