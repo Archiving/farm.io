@@ -2,6 +2,7 @@ package com.scroll.game.state;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Stack;
 import java.util.concurrent.TimeUnit;
 
 import com.badlogic.gdx.Gdx;
@@ -40,9 +41,11 @@ public class PlayState extends State {
 	public Music music;
 	public Truck truck;
 	public int playTime;
-	//current tech(s) being researched
-	public ArrayList<Tech> progressTech;
-	public ArrayList<Tech> finishedTech;
+	//current tech being researched
+	public Stack<Tech> progressTech;
+	public Stack<Tech> finishedTech;
+	
+	public Tech inProgress;
 	
 	public PlayState(GSM gsm, Region selectedRegion, int playTime, int money) {
 		super(gsm);
@@ -59,7 +62,7 @@ public class PlayState extends State {
 		tm.loadTileset(tileset);		
 		tm.loadMap("data/tilemap.tme");
 		
-		player = new Player(tm, selectedRegion);
+		player = new Player(tm, selectedRegion, 16);
 		player.setPosition(100, 280);
 		player.setMoney(money);
 		truck = new Truck(tm);
@@ -83,8 +86,8 @@ public class PlayState extends State {
 		font = Asset.instance().getFont("small_font");
 		builder = new StringBuilder();
 		
-		progressTech = new ArrayList<>();
-		finishedTech = new ArrayList<>();
+		progressTech = new Stack<>();
+		finishedTech = new Stack<>();
 		
 		shopButton = new UIButton(13, Var.HEIGHT - 51, 24, 16, new TextureRegion(Asset.instance().getTexture("shop_button")), new TextureRegion(Asset.instance().getTexture("shop_button_clicked")));
 		settingsButton = new UIButton(88, Var.HEIGHT - 26, 12, 12, new TextureRegion(Asset.instance().getTexture("settings_button")), new TextureRegion(Asset.instance().getTexture("settings_button_clicked")));
@@ -106,8 +109,8 @@ public class PlayState extends State {
 		for(int y = 0; y < currentTech.length; y++) {
 			for(int x = 0; x < currentTech[y].length; x++) {
 				if(currentTech[y][x] != null) {
-					if(currentTech[y][x].isInProgress()) this.progressTech.add(currentTech[y][x]);
-					if(currentTech[y][x].isUnlocked()) this.finishedTech.add(currentTech[y][x]);
+					if(currentTech[y][x].isInProgress()) this.progressTech.push(currentTech[y][x]);
+					if(currentTech[y][x].isUnlocked()) this.finishedTech.push(currentTech[y][x]);
 				}
 			}
 		}
@@ -159,7 +162,15 @@ public class PlayState extends State {
 		font.draw(sb, "$"+Integer.toString(player.getMoney()), 40, Var.HEIGHT - 40);
 		
 		font.draw(sb, builder.toString(), 10, Var.HEIGHT - 64);
-		font.draw(sb, "Seeds Left: " + player.getSeedInventory().size(), 10, 415);
+		font.draw(sb, "Seeds: ", 10, 415);
+		if(player.getSeedInventory().size() == player.getSeedInventoryLimit()) {
+			font.setColor(Color.RED);
+		}
+		else {
+			font.setColor(Color.GREEN);
+		}
+		font.draw(sb, player.getSeedInventory().size() + "/" + player.getSeedInventoryLimit(), 60, 415);
+		font.setColor(Color.WHITE);
 		font.draw(sb, "Crops Stored: " + player.getNumCrops(), 10, 400);
 		font.draw(sb, "Quit", 673, 458);
 		
@@ -169,6 +180,13 @@ public class PlayState extends State {
 		quitButton.draw(sb);
 		
 		sb.end();
+		
+		
+		if(inProgress != null) {
+			sb.begin();
+			
+			sb.end();
+		}
 	}
 
 	@Override

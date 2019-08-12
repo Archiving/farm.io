@@ -8,7 +8,10 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlEnumValue;
-import javax.xml.bind.annotation.XmlSeeAlso;
+
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.scroll.game.handler.Asset;
 
 @SuppressWarnings("unused") 
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -106,6 +109,9 @@ public class Tech {
 		}
 		
 		return count == required.length;
+	}
+	
+	public void draw(SpriteBatch sb) {
 	}
 	
 	
