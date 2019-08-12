@@ -6,8 +6,6 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
-import com.scroll.game.tech.Root;
-
 public class XmlDeserializer {
 
 	public static Object deserialize(String key, Class<?> c) throws JAXBException {

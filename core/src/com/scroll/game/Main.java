@@ -210,7 +210,7 @@ public class Main extends ApplicationAdapter {
 		asset.loadTexture("tilling_5", "images/technology/tilling_5.png");
 		
 		asset.loadMusic("music", "data/s_1.mp3");
-		asset.loadXML("tech", "data/techtree.xml");
+		asset.loadXML("tech", "bin/data/techtree.xml");
 		
 		sb = new SpriteBatch();
 		gsm = new GSM();

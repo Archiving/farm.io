@@ -40,7 +40,7 @@ public class PlayState extends State {
 	public Music music;
 	public Truck truck;
 	public int playTime;
-	//current tech being researched
+	//current tech(s) being researched
 	public ArrayList<Tech> progressTech;
 	public ArrayList<Tech> finishedTech;
 	
